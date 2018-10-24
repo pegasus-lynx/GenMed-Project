@@ -1,19 +1,13 @@
 * { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
 
-.right-list {
-    float: right;
-}
-
-.left-list {
-    float: left;
-}
+/* Navbar styling start */
 
 .nav-item > a , .navbar-brand{
     color: white;
     
 }
 
-.navbar-left .nav-item>.active{
+.navbar-right .nav-item>.active{
     border-bottom: 4px solid #2a5788;
 }
 /* 
@@ -22,13 +16,9 @@
     font-family: 'Ubuntu', sans-serif;
 --> */
 
-#des-para {
-    visibility: visible;
-    animation-name: zoomIn;
-    text-align: center;
-}
+/* Header styling start */
 
-.base-header {
+header {
 	text-align: center;
 	width: 100%;
 	height: auto;
@@ -58,22 +48,9 @@ header .bg-image h3{
 	margin-bottom: 30px;
 }
 
-header .bg-image button{
-    border: none;
-	outline: none;
-	padding: 10px 20px;
-    border-radius: 50px;
-    height: 50px;
-	color: #333;
-	background: #fff;
-    margin-bottom: 10px;
-	box-shadow: 0 3px 20px 0 #0000003b;
-}
-header .bg-image button p{
-    display:inline-block;
-    margin: 5px 2px;
-}
+/* Header-End */
 
+/* Section-styling */
 .features {
     color: #676a6c;
     font-family: 'Open Sans', sans-serif;
@@ -81,6 +58,36 @@ header .bg-image button p{
     margin-bottom: 5%;
 }
 
+#login-box {
+    margin: auto;
+    visibility: visible;
+    animation-name: zoomIn;
+    text-align: center;
+    padding: 20px;
+}
+
+.login-input {
+    border: 1px solid #676a6c;
+    border-radius: 50px;
+    width:100%;
+    display: block;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+}
+
+.login-button{
+    border: 0;
+    border-radius: 50px;
+    width: auto;
+    display: block;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    color:white;
+    background-image: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+}
+/* End-Section */
+
+/* Footer style starts */
 footer {
     background-color: #333;
     height: 50px;
@@ -115,6 +122,4 @@ footer {
     font-size: 16px;
 }
 
-.fa-angle-down {
-    font-size: 24px;
-}
+/* Footer style ends */
