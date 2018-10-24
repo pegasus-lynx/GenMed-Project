@@ -1,0 +1,139 @@
+* { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
+
+.right-list {
+    float: right;
+}
+
+.left-list {
+    float: left;
+}
+
+.nav-item > a , .navbar-brand{
+    color: white;
+    
+}
+
+.navbar-left .nav-item>.active{
+    border-bottom: 4px solid #2a5788;
+}
+/* 
+<!--
+    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+--> */
+
+#des-para {
+    visibility: visible;
+    animation-name: zoomIn;
+    text-align: center;
+}
+
+.base-header {
+	background: url('medicine-2207622.jpg');
+	text-align: center;
+	width: 100%;
+	height: auto;
+	background-size: cover;
+	background-attachment: fixed;
+	position: relative;
+	overflow: hidden;
+	border-radius: 0 0 85% 85% / 30%;
+}
+header .bg-image{
+	width: 100%;
+	height: 100%;
+	padding: 50px;
+	color: #FFF;
+	text-shadow: 1px 1px 1px #333;
+    background-image: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%); */
+	
+}
+
+header .bg-image h1{
+    font-family: 'Dancing Script', cursive;
+	font-size: 80px;
+	margin-bottom: 30px;
+}
+
+header .bg-image h3{
+    font-family: 'Fira Sans', sans-serif;
+	margin-bottom: 30px;
+}
+
+header .bg-image button{
+    border: none;
+	outline: none;
+	padding: 10px 20px;
+    border-radius: 50px;
+    height: 50px;
+	color: #333;
+	background: #fff;
+    margin-bottom: 10px;
+	box-shadow: 0 3px 20px 0 #0000003b;
+}
+header .bg-image button p{
+    display:inline-block;
+    margin: 5px 2px;
+}
+
+.features {
+    color: #676a6c;
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+/* .base-header {
+    background-image: linear-gradient( 135deg, #9f05ff69 10%, #fd5e086b 100%);
+    background-size: cover;
+    /* background-attachment: fixed; */
+    /* background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0 0 85% 85% / 30%;
+    height: 200px;
+} */ 
+
+/* hr {
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    margin: 0;
+} */
+
+footer {
+    background-color: #333;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.list-inline {
+    list-style: none;
+}
+
+.list-inline>li{
+    display: inline-block;
+    padding: 10px 8px;
+}
+
+.social-icon a {
+    background: #2a5788;
+    color: #fff;
+    padding: 4px 8px;
+    height: 32px;
+    width: 32px;
+    display: block;
+    border-radius: 50px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 18px/1 FontAwesome;
+    font-size: 16px;
+}
+
+.fa-angle-down {
+    font-size: 24px;
+}
