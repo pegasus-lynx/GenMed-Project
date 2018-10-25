@@ -1,53 +1,3 @@
-* { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
-
-/* Navbar styling start */
-
-.nav-item > a , .navbar-brand{
-    color: white;   
-}
-
-.navbar-right .nav-item>.active{
-    border-bottom: 4px solid #2a5788;
-}
-/* 
-<!--
-    font-family: 'Fira Sans', sans-serif;
-    font-family: 'Ubuntu', sans-serif;
---> */
-
-/* Header styling start */
-
-header {
-	text-align: center;
-	width: 100%;
-	height: auto;
-	background-size: cover;
-	background-attachment: fixed;
-	position: relative;
-	overflow: hidden;
-	border-radius: 0 0 85% 85% / 30%;
-}
-header .bg-image{
-	width: 100%;
-	height: 100%;
-	padding: 50px;
-	color: #FFF;
-	text-shadow: 1px 1px 1px #333;
-    background-image: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
-}
-
-header .bg-image h1{
-    font-family: 'Dancing Script', cursive;
-	font-size: 80px;
-	margin-bottom: 30px;
-}
-
-header .bg-image h3{
-    font-family: 'Fira Sans', sans-serif;
-	margin-bottom: 30px;
-}
-
-/* Header-End */
 
 /* Section-styling */
 .features {
@@ -56,72 +6,6 @@ header .bg-image h3{
     margin-top: 5%;
     margin-bottom: 5%;
 }
-
-#login-box {
-    margin: auto;
-    visibility: visible;
-    animation-name: zoomIn;
-    text-align: center;
-    padding: 20px;
-}
-
-.login-input {
-    border: 1px solid #676a6c;
-    border-radius: 50px;
-    width:100%;
-    display: block;
-    margin-bottom: 20px;
-    padding: 5px 10px;
-}
-
-.login-button{
-    border: 0;
-    border-radius: 50px;
-    width: auto;
-    display: block;
-    margin-bottom: 20px;
-    padding: 5px 10px;
-    color:white;
-    background-image: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
-}
-/* End-Section */
-
-/* Footer style starts */
-footer {
-    background-color: #333;
-    height: 50px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-}
-
-.list-inline {
-    list-style: none;
-}
-
-.list-inline>li{
-    display: inline-block;
-    padding: 10px 8px;
-}
-
-.social-icon a {
-    background: #2a5788;
-    color: #fff;
-    padding: 4px 8px;
-    height: 32px;
-    width: 32px;
-    display: block;
-    border-radius: 50px;
-}
-
-.fa {
-    display: inline-block;
-    font: normal normal normal 18px/1 FontAwesome;
-    font-size: 16px;
-}
-
-/* Footer style ends */
 
 /* Style the form */
 #regForm {
@@ -171,4 +55,22 @@ footer {
   /* Mark the steps that are finished and valid: */
   .step.finish {
     background-color: #4CAF50;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-family: Raleway;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  #prevBtn {
+    background-color: #bbbbbb;
   }
