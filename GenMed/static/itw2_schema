@@ -1,0 +1,123 @@
+create database GEN_MED;
+
+use GEN_MED;
+
+create table shop ( 
+	shop_id int auto_increment not null,
+	username varchar(16),
+	email varchar(32),
+	passwd varchar(32), 
+	primary key (shop_id)
+);
+
+create table shop_info (
+	shop_id int,
+	name varchar(32) not null unique,
+	owner_name varchar(32) not null,
+	mob_no varchar(16) not null,
+	alt_no varchar(16),
+	license varchar(12),
+	primary key(shop_id)
+);
+
+create table shop_loc (
+	loc_id int auto_increment not null,
+	shop_id int not null,
+	lat decimal(10,8) not null,
+	lon decimal(12,8) not null,
+	state varchar(32) not null,
+	district varchar(32),
+	city varchar(32),
+	primary key (loc_id),
+	foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade
+);
+
+create table ph_detail (
+	ph_id int auto_increment,
+	name varchar(32),
+	deg varchar(8),
+	college varchar(32),
+	primary key (ph_id)
+
+);
+
+create table shop_license (
+	shop_id int,
+	ph_id int,
+	license varchar(12),
+	dr_license_type varchar(12),
+	dr_license_no varchar(12),
+	primary key (license),
+	foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade,
+	foreign key (ph_id) references ph_detail(ph_id) on delete cascade on update cascade
+);
+
+alter table shop_info
+	add foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade;
+
+alter table shop_info
+	add foreign key (license) references shop_license(license) on delete cascade on update cascade;	
+
+create table med_info (
+	med_id int auto_increment,
+	gen_name varchar(64) unique,
+	primary key(med_id)
+);
+
+create table com_name (
+	med_id int,
+	gen_name varchar(64),
+	company_name varchar(64),
+	custom_name varchar(64),
+	primary key (custom_name),
+	foreign key (med_id) references med_info(med_id) on delete cascade on update cascade 
+); 
+
+create table avail (
+	med_id int,
+	shop_id int,
+	units int,
+	price int,
+	mfg_date date,
+	exp_date date,
+	constraint pk_med primary key (med_id,shop_id)
+);
+
+create table extra (
+	med_id int,
+	shop_id int,
+	constraint pk_med primary key (med_id,shop_id)
+);
+
+delimiter $$
+create trigger email_check_insert after insert on shop for each row
+begin
+if new.email not like '%_@__%' then
+	signal sqlstate '45000' set MESSAGE_TEXT = '[table:shop] - email column is not valid';
+end if;
+end$$
+
+delimiter $$
+create trigger exp_date_check before update on avail for each row
+begin
+if old.exp_date < curdate() then
+	signal sqlstate '45000' set message_text = 'The units of current batch have expired';
+end if;
+end$$
+
+delimiter $$
+create trigger email_check_update after update on shop for each row
+begin
+if new.email not like '%_@___%' then
+	signal sqlstate '45000' set MESSAGE_TEXT = '[table:shop] - email column is not valid';
+end if;
+end$$
+
+delimiter $$
+create trigger units_check after update on avail for each row
+begin
+if NEW.units < 0 then
+	insert into extra values(NEW.med_id,NEW.shop_id);
+	signal sqlstate '45000' set MESSAGE_TEXT = "The number of units left are less than the required units !!";
+end if;
+end$$
