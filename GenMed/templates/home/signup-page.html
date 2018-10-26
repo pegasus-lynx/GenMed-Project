@@ -1,14 +1,15 @@
 {% extends 'home/base-header.html' %}
 
 {% load static %}
-{% block style %}
+{% block head %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/signup-page.css' %}">
 {% endblock %}
 
 
 {% block body %}
     <section class="features" id="signup-form"></section>
-        <form id="regForm" action="" method="POST">
+        <form id="regForm" action={% url 'home:register' %} method="POST">
+            {% csrf_token %}
             <h1 style="text-align: center">Register with the GenMed-Project</h1>
             <!-- One "tab" for each step in the form: -->
             <div class="tab">User Profile:
@@ -45,6 +46,7 @@
             </div>
             <!-- Circles which indicates the steps of the form: -->
             <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
               <span class="step"></span>
               <span class="step"></span>
               <span class="step"></span>
