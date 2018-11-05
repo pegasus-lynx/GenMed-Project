@@ -75,7 +75,8 @@ function fixStepIndicator(n) {
 
 // Geolocation to get the latitude and longitude
 
-var x = document.getElementById("demo");
+var lat = document.getElementById("lat");
+var lon = document.getElementById("lon");
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -86,6 +87,9 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude;
+    // x.innerHTML = "Latitude: " + position.coords.latitude + 
+    // "<br>Longitude: " + position.coords.longitude;
+
+    lat.setAttribute("value", position.coords.latitude);
+    lon.setAttribute("value", position.coords.longitude);
 }
