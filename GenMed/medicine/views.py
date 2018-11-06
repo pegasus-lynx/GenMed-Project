@@ -18,13 +18,11 @@ def query_medinfo(request):
     if request.method=="GET":
         get_query = 1
         med = request.GET.get('med-name')
-
         c.execute(
             """ SELECT med_id from com_name where
                 custom_name = %s """,
                 (med,)
         )
-
         med_id = str(c.fetchall())
 
         if med_id is NULL:
@@ -53,5 +51,23 @@ def query_medinfo(request):
 
     return render(request, 'medicine/info.html', context)
 
-#def query_medavail(request):
+def query_medavail(request):
+    db=connect()
+    c=db.cursor()
+    if request.method=='GET':
+        med = request.GET.get('med-name')
+        c.execute(
+            """ SELECT med_id from com_name where
+                custom_name = %s """,
+                (med,)
+        )
+        med_id = str(c.fetchall())
 
+        if med_id is NULL:
+            context = { "get_query":get_query, 'gen_name':"null" }
+        else:
+            
+
+    else:
+        context = {}
+    return render(request, 'medicine/avail.html', context)
