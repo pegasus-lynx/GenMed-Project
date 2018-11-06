@@ -1,0 +1,41 @@
+{% extends 'home/base-header.html' %}
+
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'medicine/home.css' %}">
+{% endblock %}
+
+{% block body %}
+    <header>
+        <div class="bg-image">
+            <h1>Search the medicine here</h1>
+            <form action="{% url 'medicine:med-info' %}" method="get" autocomplete="off">
+                <p><input type="text" name="med-name" id="text-box" placeholder="Search..." onfocus="this.removeAttribute('placeholder')"></p>
+                <p><input type="submit" name="" value="Search" id="search-button"></p>
+            </form>
+        </div>
+    </header>
+    <!-- context = { 'get_query':get_query, 'gen_name':gen_name, 'common_name':common_name, } -->
+    <section id="search-result">
+    {% if get_query %}
+        <h1>{{ gen_name }}</h1>
+        <hr>
+        <p>The generic name of the drug you have searched is {{ gen_name }}.<br> 
+        Other alternative names to this drug<br></p>
+
+        <table>
+            <tr>
+                <th> Company Name </th>
+                <th> Custom Drug Name </th>
+            </tr>
+            {% for row in common_name %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    </section>
+{% endblock %}
