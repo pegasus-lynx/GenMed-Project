@@ -5,7 +5,7 @@ from django.urls import reverse
 import MySQLdb
 
 def connect():
-    return MySQLdb.connect(user="root",passwd="DKumar@14",db="bank")
+    return MySQLdb.connect(user="django",passwd="djUser@123",db="gen_med")
 
 # Create your views here.
 

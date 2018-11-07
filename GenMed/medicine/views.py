@@ -5,7 +5,7 @@ from django.urls import reverse
 import MySQLdb
 
 def connect():
-    return MySQLdb.connect(user="root",passwd="DKumar@14",db="bank")
+    return MySQLdb.connect(user="django",passwd="djUser@123",db="gen_med")
 
 def home(request):
     context = {}
@@ -14,6 +14,7 @@ def home(request):
 def query_medinfo(request):
     db=connect()
     c=db.cursor()
+    context = {}
     get_query = 0
     if request.method=="GET":
         get_query = 1
@@ -23,10 +24,11 @@ def query_medinfo(request):
                 custom_name = %s """,
                 (med,)
         )
-        med_id = str(c.fetchall())
+        med_id = c.fetchone()
 
-        if med_id is NULL:
-            context = { "get_query":get_query, 'gen_name':"null" }
+        # print(med_id)
+        if med_id  is None:
+            context = { "get_query":get_query }
         else:
             c.execute(
                 """ SELECT gen_name from med_info where
@@ -40,14 +42,11 @@ def query_medinfo(request):
                     where med_id = %s """,
                     (med_id,)
             )
-
             common_name = list(c.fetchall())
-
             context = { 'get_query':get_query, 'gen_name':gen_name, 'common_name':common_name, }
 
     else:
-        get_query = 0
-        context = { 'get_query':get_query, }
+        context = { 'get_query':False, }
 
     return render(request, 'medicine/info.html', context)
 
@@ -63,11 +62,20 @@ def query_medavail(request):
         )
         med_id = str(c.fetchall())
 
-        if med_id is NULL:
-            context = { "get_query":get_query, 'gen_name':"null" }
+        if med_id is None:
+            context = { "get_query":True, 'gen_name':False }
         else:
+            c.execute(
+                """ select avail.shop_id,shop.shop_name,avail.units,avail.price
+                    from avail inner join shop on avail.shop_id=shop.shop_id
+                    where avail.med_id = %s """,
+                    (med_id,)
+            )
+            shops = list(c.fetchall())
+            for i in shops:
+                print(i)
             
 
     else:
-        context = {}
+        context = { "get_query":False }
     return render(request, 'medicine/avail.html', context)

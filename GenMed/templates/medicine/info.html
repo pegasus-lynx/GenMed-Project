@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static 'medicine/home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'medicine/info.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -15,9 +15,9 @@
             </form>
         </div>
     </header>
-    <!-- context = { 'get_query':get_query, 'gen_name':gen_name, 'common_name':common_name, } -->
+
     <section id="search-result">
-    {% if get_query %}
+    {% if gen_name %}
         <h1>{{ gen_name }}</h1>
         <hr>
         <p>The generic name of the drug you have searched is {{ gen_name }}.<br> 

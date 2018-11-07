@@ -7,6 +7,8 @@ create table shop (
 	username varchar(16),
 	email varchar(32),
 	passwd varchar(32), 
+	first_name varchar(32),
+	last_name varchar(32),
 	primary key (shop_id)
 );
 
@@ -29,7 +31,7 @@ create table shop_loc (
 	district varchar(32),
 	city varchar(32),
 	primary key (loc_id),
-	foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade
+	constraint shop-loc foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade
 );
 
 create table ph_detail (
@@ -38,7 +40,6 @@ create table ph_detail (
 	deg varchar(8),
 	college varchar(32),
 	primary key (ph_id)
-
 );
 
 create table shop_license (

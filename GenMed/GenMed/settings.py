@@ -80,13 +80,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'GEN_MED',
-        'USER': 'root',
-        'PASSWORD': 'DKumar@14',
+        'USER': 'django',
+        'PASSWORD': 'djUser@123',
         'HOST': 'localhost',
-        'PORT': '7498',
+        'PORT': '',
     }
 }
 
+# Custom Auth Settings 
+
+# AUTH_USER_MODEL = 'shop.MyUser'
+# AUTHENTICATION_BACKENDS = ('shop.auth_backend',)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
