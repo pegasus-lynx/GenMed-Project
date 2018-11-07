@@ -5,7 +5,7 @@ from django.urls import reverse
 import MySQLdb
 
 def connect():
-    return MySQLdb.connect(user="django",passwd="djUser@123",db="gen_med")
+    return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
 
 def home(request):
     context = {}
@@ -60,22 +60,29 @@ def query_medavail(request):
                 custom_name = %s """,
                 (med,)
         )
-        med_id = str(c.fetchall())
-
+        med_id = c.fetchone()
+        # print(med_id)
+        if med_id is None:
+            c.execute(
+            """ SELECT med_id from med_info where
+                gen_name = %s """,
+                (med,)
+            )
+        med_id = c.fetchone()
+        
         if med_id is None:
             context = { "get_query":True, 'gen_name':False }
         else:
             c.execute(
-                """ select avail.shop_id,shop.shop_name,avail.units,avail.price
-                    from avail inner join shop on avail.shop_id=shop.shop_id
+                """ select avail.shop_id,shop_info.name,avail.units,avail.price
+                    from avail inner join shop_info on avail.shop_id=shop_info.shop_id
                     where avail.med_id = %s """,
                     (med_id,)
             )
             shops = list(c.fetchall())
             for i in shops:
                 print(i)
-            
-
+            context = {'get_query':True}
     else:
         context = { "get_query":False }
     return render(request, 'medicine/avail.html', context)

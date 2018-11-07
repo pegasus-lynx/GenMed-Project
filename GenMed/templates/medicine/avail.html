@@ -8,19 +8,44 @@
 {% block body %}
     <header>
         <div class="bg-image">
-            <h1>Search the medicine here</h1>
-            <form action="{% url 'medicine:med-info' %}" method="get" autocomplete="off">
+            <h2>Search the availability of medicine here</h2>
+            <form action="{% url 'medicine:med-avail' %}" method="get" autocomplete="off">
                 <p><input type="text" name="med-name" id="text-box" placeholder="Search..." onfocus="this.removeAttribute('placeholder')"></p>
                 <p><input type="submit" name="" value="Search" id="search-button"></p>
             </form>
         </div>
     </header>
-
     <div class="container">
-        <section id="map">
-        </section>    
-        <section id="cards">
-        </section>
+    {% if get_query == 'True' %}
+        {%if med_id != None  %}
+            <section id="map">
+            </section>    
+            <section id="cards">
+                <table>
+                    <tr>
+                        <th>Sl.No.</th>
+                        <th>Shop</th>
+                        <th>Units</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for shop in shops %}
+                        <tr>
+                            <td></td>
+                            {% for col in shop %}
+                                <td>{{ col }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </section>
+        {% else %}
+            <section id="not_found">
+                <h1>Sorry</h1>
+                <hr>
+                <p>We could not find any matching results in our databases.</p>
+            </section>
+        {% endif %}
+    {% endif %}
     </div>
 
 {% endblock %}
