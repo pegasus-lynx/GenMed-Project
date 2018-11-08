@@ -53,6 +53,7 @@ def query_medinfo(request):
 def query_medavail(request):
     db=connect()
     c=db.cursor()
+    q=db.cursor()
     if request.method=='GET':
         med = request.GET.get('med-name')
         c.execute(
@@ -68,21 +69,38 @@ def query_medavail(request):
                 gen_name = %s """,
                 (med,)
             )
-        med_id = c.fetchone()
-        
+            med_id = c.fetchone()
+
         if med_id is None:
             context = { "get_query":True, 'gen_name':False }
         else:
+
             c.execute(
                 """ select avail.shop_id,shop_info.name,avail.units,avail.price
                     from avail inner join shop_info on avail.shop_id=shop_info.shop_id
                     where avail.med_id = %s """,
                     (med_id,)
             )
-            shops = list(c.fetchall())
-            for i in shops:
-                print(i)
-            context = {'get_query':True}
+            res = list(c.fetchall())
+            shop_ids = [ i[0] for i in res ]
+            shops = {}
+
+            for i in range(len(shop_ids)):
+                shops[res[i][0]] = res[i][1:]
+
+            print(shop_ids)
+            
+            loc = {}
+            for i in shop_ids:
+                q.execute(
+                    """ select lat, lon from shop_loc
+                        where shop_id = %s """,
+                        (i,)
+                )
+                cord = q.fetchone()
+                loc[i] = cord
+
+            context = {'get_query':True, 'med_id':med_id, 'loc':loc, 'shops':shops}
     else:
         context = { "get_query":False }
     return render(request, 'medicine/avail.html', context)
