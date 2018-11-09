@@ -17,13 +17,15 @@ def logIn(request):
     db=connect()
     c=db.cursor()
     if request.method=='POST':
+        # print("--"*100)
+        # print(request.POST.dict())
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request,user)
             print(str(user))
-            return redirect(reverse('shop-profile'))
+            return redirect(reverse('dashboard'))
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
@@ -80,7 +82,7 @@ def register(request):
             (data['shop_id'],data['lat'],data['lon'],
             data['state'],data['district'],data['city'])
         )
-        
+        print(request.POST.dict())
         #return HttpResponse(request.POST.dict())
         return redirect(reverse('update-stock'))
     else:
