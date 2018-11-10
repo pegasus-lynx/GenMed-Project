@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import MySQLdb
 
+def shopheader(request):
+    return render(request, 'shop/shop_header.html', context = {})
+
 def connect():
     return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
 
@@ -141,7 +144,7 @@ def profile(request):
     return render(request, 'medicine/info.html', context)
        
 @login_required
-def cur_stock(request):
+def curstock(request):
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated():
@@ -307,11 +310,12 @@ def update_stock(request):
         context = {}
         return render(request, 'home/login-page.html', context)
  
- @login_required
- def update_cord(request):
-     db=connect()
-     c=db.cursor()
-     if request.user.is_authenticated():
+
+@login_required
+def update_cord(request):
+    db=connect()
+    c=db.cursor()
+    if request.user.is_authenticated():
         if request.method == 'POST':
             q = request.POST.dict()
         

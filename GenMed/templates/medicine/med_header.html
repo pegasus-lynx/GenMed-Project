@@ -1,0 +1,32 @@
+{% extends 'home/base-header.html' %}
+
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'medicine/med_header.css' %}">
+
+    {% block head_2 %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block body %}
+    <header>
+        <div class="bg-image">
+            <h1>Search the medicine here</h1>
+            <form action="{% url 'medicine:med-info' %}" method="get" autocomplete="off">
+                <p><input type="text" name="med-name" id="text-box" placeholder="Search..." 
+                    onfocus="this.removeAttribute('placeholder')" onblur="this.setAttribute('placeholder','Search...')""></p>
+                <p>
+                    <input type="submit" name="" value="Get Info" class="search-button">
+                    <input type="submit" name="" value="Get Avail" class="search-button">
+                </p>
+            </form>
+        </div>
+    </header>
+
+    <div class='container' id="main">    
+        {% block body_2 %}
+        {% endblock %}
+    </div>
+    
+{% endblock %}

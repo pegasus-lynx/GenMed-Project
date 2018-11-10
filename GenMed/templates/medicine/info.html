@@ -1,20 +1,13 @@
 {% extends 'home/base-header.html' %}
 
+{% extends 'medicine/med_header.html' %}
+
 {% load static %}
-{% block head %}
+{% block head_2 %}
     <link rel="stylesheet" type="text/css" href="{% static 'medicine/info.css' %}">
 {% endblock %}
 
-{% block body %}
-    <header>
-        <div class="bg-image">
-            <h1>Search the medicine here</h1>
-            <form action="{% url 'medicine:med-info' %}" method="get" autocomplete="off">
-                <p><input type="text" name="med-name" id="text-box" placeholder="Search..." onfocus="this.removeAttribute('placeholder')"></p>
-                <p><input type="submit" name="" value="Search" id="search-button"></p>
-            </form>
-        </div>
-    </header>
+{% block body_2 %}
 
     <section id="search-result">
     {% if gen_name %}

@@ -1,47 +1,43 @@
-{% extends 'home/base-header.html' %}
+{% extends 'medicine/med_header.html' %}
 
 {% load static %}
-{% block head %}
+{% block head_2 %}
     <link rel="stylesheet" type="text/css" href="{% static 'medicine/home.css' %}">
 {% endblock %}
 
-{% block body %}
-    <header>
-        <div class="bg-image">
-            <h1>Search the medicine here</h1>
-            <form action="{% url 'medicine:med-info' %}" method="get" autocomplete="off">
-                <p><input type="text" name="med-name" id="text-box" placeholder="Search..." onfocus="this.removeAttribute('placeholder')"></p>
-                <p><input type="submit" name="" value="Search" id="search-button"></p>
-            </form>
-        </div>
-    </header>
+{% block body_2 %}
 
     <section id="gen-med-info">
-        <h1>What are generic drugs?</h1>
-        <p>A generic drug is a medication created to be the same as an already 
-        marketed brand-name drug in dosage form, safety, strength, route of 
-        administration, quality, performance characteristics, and intended use. 
-        These similarities help to demonstrate bioequivalence, which means 
-        that a generic medicine works in the same way and provides the same
-        clinical benefit as its brand-name version. In other words, you can 
-        take a generic medicine as an equal substitute for its brand-name counterpart.</p>
 
-        <h1>Do generic medicines work the same as brand-name medicines?</h1>
-        <p>Yes. Any generic medicine modeled after a brand-name medicine must perform the same 
-        in the body as the brand-name medicine. This standard applies to all generic medicines. 
-        A generic medicine is the same as a brand-name medicine in dosage, safety, effectiveness, 
-        strength, stability, and quality, as well as in the way it is taken and the way it should 
-        be used. Generic medicines use the same active ingredients as brand-name medicines and work the same way, 
-        so they have the same risks and benefits as the brand-name medicines. The FDA Generic Drugs 
-        Program conducts a rigorous review to make certain generic medicines meet these standards,
-         in addition to conducting 3,500 inspections of manufacturing plants a year and monitoring 
-         drug safety after the generic medicine has been approved and brought to market.</p>
+        <div class="para">
+            <h1>What are generic drugs?</h1>
+            <p>A generic drug is a medication created to be the same as an already 
+            marketed brand-name drug in dosage form, safety, strength, route of 
+            administration, quality, performance characteristics, and intended use. 
+            These similarities help to demonstrate bioequivalence, which means 
+            that a generic medicine works in the same way and provides the same
+            clinical benefit as its brand-name version. In other words, you can 
+            take a generic medicine as an equal substitute for its brand-name counterpart.</p>
+        </div>
 
-        <p>It is important to note that there will always be a slight, 
-        but not medically important, level of natural variability—just as there is for 
-        one batch of brand-name medicine compared with the next batch of brand-name product. This variability 
-        can and does occur during manufacturing, for both brand-name and generic medicines. When a medicine, 
-        generic or brand-name, is mass produced, very small variations in purity, size, strength, and other 
-        parameters are permitted. FDA limits how much variability is acceptable.</p>
+        <div class='para'>
+            <h1>Do generic medicines work the same as brand-name medicines?</h1>
+            <p>Yes. Any generic medicine modeled after a brand-name medicine must perform the same 
+            in the body as the brand-name medicine. This standard applies to all generic medicines. 
+            A generic medicine is the same as a brand-name medicine in dosage, safety, effectiveness, 
+            strength, stability, and quality, as well as in the way it is taken and the way it should 
+            be used. Generic medicines use the same active ingredients as brand-name medicines and work the same way, 
+            so they have the same risks and benefits as the brand-name medicines. The FDA Generic Drugs 
+            Program conducts a rigorous review to make certain generic medicines meet these standards,
+            in addition to conducting 3,500 inspections of manufacturing plants a year and monitoring 
+            drug safety after the generic medicine has been approved and brought to market.
+            <br><br>
+            It is important to note that there will always be a slight, 
+            but not medically important, level of natural variability—just as there is for 
+            one batch of brand-name medicine compared with the next batch of brand-name product. This variability 
+            can and does occur during manufacturing, for both brand-name and generic medicines. When a medicine, 
+            generic or brand-name, is mass produced, very small variations in purity, size, strength, and other 
+            parameters are permitted. FDA limits how much variability is acceptable.</p>
+        </div>
     </section>
 {% endblock %}

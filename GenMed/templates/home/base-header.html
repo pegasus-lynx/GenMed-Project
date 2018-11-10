@@ -39,10 +39,18 @@
             </ul>
         </div>
         <div>
-            <ul class="navbar-nav navbar-right">
-                <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Signup</a></li>
-            </ul>
+            {% if request.user.is_authenticated %}
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item">Hello {{ request.user.username }}</li>
+                    <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Logout</a></li>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Signup</a></li>
+                </ul>
+            {% endif %}
         </div>
     </nav>
 
