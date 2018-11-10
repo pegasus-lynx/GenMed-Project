@@ -1,0 +1,59 @@
+hr {
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+#search-result h1 {
+	color: #333; 
+	font-family: 'Fira Sans', sans-serif;
+	text-align: center;
+	font-size: 2.2rem;
+}
+
+#search-result h4 {
+	color: #333; 
+	font-family: 'Fira Sans', sans-serif;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+table {
+    width: 80%;
+    border: 1px solid black;
+    font-family: 'Open Sans', sans-serif;
+    border : none;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(110,110,110,0.3);
+}
+
+.col-lg-10 {
+    margin-left: 8.33%;
+}
+
+.col1 {
+    width: 40%;
+}
+
+.col2 {
+    width: 60%;
+}
+
+tr th {
+    background: #333;
+    color: white;
+    padding: 10px 10px;
+}
+
+tr td {
+    padding: 5px 10px;
+}
+
+tr {
+    background: #e0e0eb
+}
+
+tr:nth-child(even){
+    background: #ffffff;
+}

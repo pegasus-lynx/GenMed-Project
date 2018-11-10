@@ -1,5 +1,3 @@
-{% extends 'home/base-header.html' %}
-
 {% extends 'medicine/med_header.html' %}
 
 {% load static %}
@@ -13,18 +11,17 @@
     {% if gen_name %}
         <h1>{{ gen_name }}</h1>
         <hr>
-        <p>The generic name of the drug you have searched is {{ gen_name }}.<br> 
-        Other alternative names to this drug<br></p>
+        <h4>General Names</h4>
 
-        <table>
+        <table class="col-lg-10">
             <tr>
-                <th> Company Name </th>
-                <th> Custom Drug Name </th>
+                <th class="col1"> Drug Name</th>
+                <th class="col2"> Company Name  </th>
             </tr>
             {% for row in common_name %}
                 <tr>
                     {% for col in row %}
-                        <td>{{ col }}</td>
+                        <td class="col{{ forloop.counter }}">{{ col }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}

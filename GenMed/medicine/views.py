@@ -35,7 +35,7 @@ def query_medinfo(request):
                     med_id = %s """,
                     (med_id,)
             )
-            gen_name= str(c.fetchall())
+            gen_name= c.fetchone()
 
             c.execute(
                 """ select custom_name, company_name from com_name
@@ -43,7 +43,7 @@ def query_medinfo(request):
                     (med_id,)
             )
             common_name = list(c.fetchall())
-            context = { 'get_query':get_query, 'gen_name':gen_name, 'common_name':common_name, }
+            context = { 'get_query':get_query, 'gen_name':gen_name[0], 'common_name':common_name, }
 
     else:
         context = { 'get_query':False, }
