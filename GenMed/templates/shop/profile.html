@@ -1,14 +1,13 @@
-{% extends 'shop/shop_header.html' %}
+{% extends 'home/base_header.html' %}
 
 {% load static %}
 
 {% block head_2 %}
-    <link rel="stylesheet" type="text/css" href="{% static 'shop/dashboard.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/profile.css' %}">
 {% endblock %}
 
-<!-- context = {'shop_id':shop_id , 'shop_loc':shop_loc, 'shop_info':shop_info} -->
-
 {% block body_2 %}
+<div class='container' id='main'>
     <section id='info-sec'>
         <h2>Basic Info:</h2>
         <hr>
@@ -41,4 +40,5 @@
             </tr>
         </table>
     </section>
+</div>
 {% endblock %}

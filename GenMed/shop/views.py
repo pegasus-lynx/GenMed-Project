@@ -13,6 +13,8 @@ def connect():
 
 def get_shopid(request,c):
     username = request.user.username
+    print('-'*100)
+    print(username)
     c.execute(
         """ select shop_id from shop
             where username = %s """ ,
@@ -20,7 +22,7 @@ def get_shopid(request,c):
     )
     return c.fetchone()
 
-def get_userinfo(request,c):
+def get_userinfo(request,c,shop_id):
     c.execute(
         """ select username,first_name,last_name,email
             from shop where shop_id = %s """,
@@ -33,7 +35,7 @@ def get_userinfo(request,c):
         user_info[keys[i]]=res[i]
     return user_info
 
-def get_license(request,c):
+def get_license(request,c,shop_id):
     c.execute(
         """ select SL.license,SL.dr_license_no,PD.ph_id,PD.name,PD.deg,PD.college
             from shop_license as SL inner join ph_detail as PD on 
@@ -41,7 +43,7 @@ def get_license(request,c):
             where SL.shop_id = %s """,
             (shop_id,)
     )
-    keys = [ "license", "drug-license", "ph-id","ph-name","deg","college"]
+    keys = [ "license", "drug_license", "ph_id","ph_name","deg","college"]
     res = c.fetchone()
     shop_license = {}
     for i in range(len(keys)):
@@ -49,21 +51,21 @@ def get_license(request,c):
     
     return shop_license
 
-@login_required
-def dashboard(request):    
-    if request.user.is_authenticated():
-        
+def dashboard(request):   
+    if request.user.is_authenticated:
         db=connect()
         c=db.cursor()
-        shop_id = get_shopid(request,c)
-        user_info = get_userinfo(request,c)
+        shop_id = get_shopid(request,c)[0]
 
+        print(shop_id)
+        # user_info = get_userinfo(request,c,shop_id)
         c.execute(
             """ select name,owner_name,mob_no,alt_no 
                 from shop_info where shop_id = %s""",
                 (shop_id,)
         )
-        keys = ["shop-name","owner_name","mob_no","alt_no"]
+
+        keys = ["shop_name","owner_name","mob_no","alt_no"]
         res = c.fetchone();
 
         shop_info = {}
@@ -71,23 +73,26 @@ def dashboard(request):
             shop_info[keys[i]]=res[i]
         
         c.execute(
-            """ select street,city,district,state
+            """ select city,district,state
                 from shop_loc where shop_id = %s """,
                 (shop_id,)
         )
-        keys = ["street","city","district","state"]
+        keys = ["city","district","state"]
         res = c.fetchone();
 
         shop_loc = {}
         for i in range(len(keys)):
             shop_loc[keys[i]]=res[i]
 
-        context = {'shop_id':shop_id , 'user_info':user_info, 'shop_loc':shop_loc, 'shop_info':shop_info}
+        print('shop_id',shop_id)
+        print('shop_loc',shop_loc)
+        print('shop_info',shop_info)
+
+        context = {'shop_id':shop_id , 'shop_loc':shop_loc, 'shop_info':shop_info}
         return render(request, 'shop/dashboard.html', context)
     else:
         context = {}
-        return render(request, 'home/login-page.html', context)
-    
+        return render(request, 'home/login-page.html', context)    
 
 def profile(request):
     db=connect()
@@ -153,7 +158,7 @@ def curstock(request):
         c=db.cursor()
         
         shop_id = get_shopid(request,c)
-        user_info = get_userinfo(request,c)
+        #user_info = get_userinfo(request,c)
 
         c.execute(
             """ select med_info.gen_name,avail.units,avail.price,avail.batch,avail.exp_date
@@ -179,10 +184,12 @@ def license(request):
         c=db.cursor()
         
         shop_id = get_shopid(request,c)
-        user_info = get_userinfo(request,c)
+        #user_info = get_userinfo(request,c)
         shop_license = get_license(request,c)
         
-        context = {'shop_id':shop_id , 'user_info':user_info, 'shop_license':shop_license }
+        print(shop_license)
+
+        context = {'shop_id':shop_id , 'shop_license':shop_license }
         return render(request, 'shop/license.html', context)
     else:
         context = {}
@@ -199,7 +206,7 @@ def update_info(request):
             q = request.POST.dict()
             
             shop_id = get_shopid(request,c)
-            user_info = get_userinfo(request,c)
+            #user_info = get_userinfo(request,c)
             cur_shop_info = get_shopinfo(request,c)
 
             update = False
@@ -255,7 +262,7 @@ def update_license(request):
             q = request.POST.dict()
             
             shop_id = get_shopid(request,c)
-            user_info = get_userinfo(request,c)
+            #user_info = get_userinfo(request,c)
             cur_shop_license = get_license(request,c)
         
             update = False
@@ -302,7 +309,7 @@ def update_stock(request):
             q = request.POST.dict()
         
             shop_id = get_shopid(request,c)
-            user_info = get_userinfo(request,c)
+            #user_info = get_userinfo(request,c)
         else:
             context = {}
             return render(request, 'shop/update/stock.html', context)
@@ -310,7 +317,6 @@ def update_stock(request):
         context = {}
         return render(request, 'home/login-page.html', context)
  
-
 @login_required
 def update_cord(request):
     db=connect()
@@ -320,7 +326,7 @@ def update_cord(request):
             q = request.POST.dict()
         
             shop_id = get_shopid(request,c)
-            user_info = get_userinfo(request,c)
+            #user_info = get_userinfo(request,c)
 
             c.execute(
                 """ update shop_loc

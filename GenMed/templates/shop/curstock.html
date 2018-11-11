@@ -1,0 +1,26 @@
+{% extends 'shop/shop_header.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/curstock.css' %}">
+{% endblock %}
+
+
+
+{% block body_2 %}
+    <section id='stock-sec'>
+        <h2>Current Stock:</h2>
+        <hr>
+        <table>
+            <tr>
+                <td>Shop License:</td>
+                <td>{{ shop_license.license }}</td>
+            </tr>
+            <tr>
+                <td>Drug License:</td>
+                <td>{{ shop_license.drug_license }}</td>
+            </tr>
+        </table>
+    </section>
+{% endblock %}
