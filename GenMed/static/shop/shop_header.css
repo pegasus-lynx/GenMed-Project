@@ -30,18 +30,41 @@ header .bg-image h3{
 	margin-bottom: 30px;
 }
 
-header .bg-image button{
-    border: none;
-	outline: none;
-	padding: 10px 20px;
-    border-radius: 50px;
-    height: 50px;
-	color: #333;
-	background: #fff;
-    margin-bottom: 10px;
-	box-shadow: 0 3px 20px 0 #0000003b;
+#main{
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
-header .bg-image button p{
-    display:inline-block;
-    margin: 5px 2px;
+
+#inner-nav {
+    background: #fafafa;
+    color: #333;
+    padding: 10px 5px;
+    padding-bottom: 0;
+}
+
+#inner-nav ul .nav-item > a{
+    color: #333;
+    font-family: 'Fira Sans', sans-serif;   
+}
+
+#inner-nav .navbar-left .nav-item>.active{
+    border-bottom: 3px solid #163658;
+}
+
+#inner-nav ul li {
+    display: inline-block;
+}
+@media (min-width: 768px){
+    #inner-nav ul{
+        width: auto;
+    }
+    #inner-nav ul li {
+        display: inline-table;
+    }
+}
+
+@media (max-width: 768px){
+    #inner-nav ul{
+        width: 100%;
+    }
 }

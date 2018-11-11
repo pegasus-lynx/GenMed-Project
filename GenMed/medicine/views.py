@@ -62,7 +62,7 @@ def query_medavail(request):
                 (med,)
         )
         med_id = c.fetchone()
-        # print(med_id)
+        print(med_id)
         if med_id is None:
             c.execute(
             """ SELECT med_id from med_info where
@@ -71,6 +71,7 @@ def query_medavail(request):
             )
             med_id = c.fetchone()
 
+        print(med_id)
         if med_id is None:
             context = { "get_query":True, 'gen_name':False }
         else:
@@ -88,8 +89,8 @@ def query_medavail(request):
             for i in range(len(shop_ids)):
                 shops[res[i][0]] = res[i][1:]
 
-            print(shop_ids)
-            
+            #print(shop_ids)
+            print(shops)
             loc = {}
             for i in shop_ids:
                 q.execute(

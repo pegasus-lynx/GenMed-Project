@@ -16,19 +16,16 @@
         </div>
     </header>
 
-    <div class='container'>
-            <nav class="navbar navbar-expand-md sticky-top bg-light" style="padding-bottom:0">
+    <div class='container' id="main">
+            <nav class="navbar navbar-expand-md navbar-expand-sm navbar-expand-xs sticky-top" id='inner-nav'>
                     <!--Links-->
-                    <div class="collapse navbar-collapse" id="base-nav">
                         <ul class="navbar-nav navbar-left">
-                            <li class="nav-item"><a href="#" id="dashboard">Dashboard</a></li>
-                            <li class="nav-item"><a href="#" id="license_info">License</a></li>
-                            <li class="nav-item"><a href="#" id="curstocks">Stocks</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href="#" class="nav-link active">Dashboard</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href="#" class="nav-link">License</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href="#" class="nav-link">Stocks</a></li>
                         </ul>
-                    </div>
                 </nav>
             {% block body_2 %}
             {% endblock %}
     </div>
-    ,
 {% endblock %}

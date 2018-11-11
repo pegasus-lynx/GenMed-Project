@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body_2 %}
-    {% if get_query == 'True' %}
+    {% if get_query %}
         {%if med_id != None  %}
             <section id="map">
             </section>    
@@ -20,7 +20,7 @@
                     </tr>
                     {% for shop in shops %}
                         <tr>
-                            <td></td>
+                            <td>{{ forloop.counter }}</td>
                             {% for col in shop %}
                                 <td>{{ col }}</td>
                             {% endfor %}

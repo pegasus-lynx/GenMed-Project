@@ -1,0 +1,28 @@
+#map {
+
+}
+
+table {
+    border : 0px;
+}
+
+tr {
+    border-radius : 15px;
+    margin-bottom : 25px;
+}
+
+.col1 {
+    width:10%;
+}
+
+.col2 {
+    width:50%;
+}
+
+.col3 {
+    width:20%;
+}
+
+.col4 {
+    width:20%;
+}

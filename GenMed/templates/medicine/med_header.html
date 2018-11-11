@@ -17,8 +17,8 @@
                 <p><input type="text" name="med-name" id="text-box" placeholder="Search..." 
                     onfocus="this.removeAttribute('placeholder')" onblur="this.setAttribute('placeholder','Search...')""></p>
                 <p>
-                    <input type="submit" name="" value="Get Info" class="search-button">
-                    <input type="submit" name="" value="Get Avail" class="search-button">
+                    <input type="submit" name="info" value="Get Info" class="search-button" onclick="this.form.action='{% url 'medicine:med-info' %}'">
+                    <input type="submit" name="avail" value="Get Avail" class="search-button" onclick="this.form.action='{% url 'medicine:med-avail' %}'">
                 </p>
             </form>
         </div>
