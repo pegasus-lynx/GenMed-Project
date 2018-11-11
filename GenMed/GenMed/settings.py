@@ -87,11 +87,6 @@ DATABASES = {
     }
 }
 
-# Custom Auth Settings 
-
-# AUTH_USER_MODEL = 'shop.MyUser'
-# AUTHENTICATION_BACKENDS = ('shop.auth_backend',)
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
