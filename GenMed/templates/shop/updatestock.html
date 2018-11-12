@@ -1,0 +1,39 @@
+{% extends 'shop/shop_header.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/upadtestock.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock %}
+
+
+
+{% block body_2 %}
+    <section id='stock-sec'>
+        <h2>Update Stock:</h2>
+        <hr>
+        <form action="" method="post">
+            <table>
+                <tr>
+                    <th>Gen Name</th>
+                    <th>Units</th>
+                    <th>Price/Unit</th>
+                    <th>Exp. Date</th>
+                    <th>Batch</th>
+                </tr>
+                {% for row in cur_stock %}
+                    <tr>
+                        {% for cell in row %}
+                            <td><input type="text" name= id="" value="{{ cell }}"></td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" value='Update' id='up_stk_button' />
+            <input type="button" value='Add Field' id='add_button' />
+        </form>
+    </section>
+
+    <script src="{% static shop/upadtestock.js %}"></script>
+{% endblock %}

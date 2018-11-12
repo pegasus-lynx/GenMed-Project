@@ -269,7 +269,6 @@ def update_license(request):
         shop_id = get_shopid(request,c)
         if request.method == 'POST':
             q = request.POST.dict()
-            #user_info = get_userinfo(request,c)
             cur_shop_license = get_license(request,c,shop_id)
         
             update = False
@@ -305,6 +304,7 @@ def update_license(request):
             return redirect(reverse('dashboard'))
         else:
             shop_license = get_license(request,c,shop_id)
+            heads = ["license", "drug_license", "ph_id","ph_name","deg","college"]
             context = {'shop_id':shop_id , 'shop_license':shop_license }
             return render(request, 'shop/update/license.html', context)
 
@@ -318,12 +318,49 @@ def update_stock(request):
             q = request.POST.dict()
         else:
             cur_stock = get_curstock(request,c,shop_id)
-            context = { 'shop_id':shop_id, 'cur_stock':cur_stock }
-            return render(request, 'shop/update/stock.html', context)
+            heads = [ 'gen_name', 'units', 'price', 'exp_date', 'batch']
+            context = { 'shop_id':shop_id, 'cur_stock':cur_stock , 'heads':heads}
+            return render(request, 'shop/updatestock.html', context)
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
- 
+
+@login_required
+def upadte_stock_2(request):
+    db=connect()
+    c=db.cursor()
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
+        if request.method == 'POST':
+            q = request.POST.dict()
+        else:
+            cur_stock = get_curstock(request,c,shop_id)
+            heads = [ 'gen_name', 'units', 'price', 'exp_date', 'batch']
+            context = { 'shop_id':shop_id, 'cur_stock':cur_stock , 'heads':heads}
+            return render(request, 'shop/updatestock.html', context)
+    else:
+        context = {}
+        return render(request, 'home/login-page.html', context)
+
+@login_required
+def update_med(request):
+    db=connect()
+    c=db.cursor()
+
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
+        if request.method == 'POST':
+            q= request.POST.dict()
+            keys = [ 'med_id', 'units', 'price', 'exp_date']
+
+            c.execute(
+                """ update avail
+            )
+
+    else:
+        context = {}
+        return render(request, 'home/login-page.html', context)
+
 @login_required
 def update_cord(request):
     db=connect()
