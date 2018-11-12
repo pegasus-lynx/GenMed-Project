@@ -1,0 +1,42 @@
+{% extends 'shop/shop_header.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/updateinfo.css' %}">
+{% endblock %}
+
+<!-- context = { 'shop_id':shop_id, 'shop_info':cur_shop_info, 'shop_loc':cur_shop_loc } -->
+
+{% block body_2 %}
+    <section id='upadteinfo-sec'>
+        <form action={% url 'shop:update_info' %} method="post">
+            {% csrf_token %}
+            <h2>Basic Info:</h2>
+            <hr>
+            <!-- {% for key,value in shop_info.items %}
+                <p>
+                    <label for="{{key}}">{{ key|title }}:</label>
+                    <input type="text" name="{{key}}" id="{{key}}" value="{{ value }}">
+                </p>
+            {% endfor %} -->
+            {% for row in shop_info %}
+                <p>
+                    <label for="{{row.0}}">{{ row.0|title }}:</label>
+                    <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
+                </p>
+            {% endfor %}
+            <h2>Shop Location:</h2>
+            <hr>
+            {% for row in shop_loc %}
+                <p>
+                    <label for="{{row.0}}">{{ row.0|title }}:</label>
+                    <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
+                </p>
+            {% endfor %}
+            <p>Do you want to update the coordinates of your shop ? &nbsp;&nbsp; <input type="checkbox" name="change_cord"></p>
+            <input type="submit" value="Update" name='update_button'>
+        </form>
+
+    </section>
+{% endblock %}

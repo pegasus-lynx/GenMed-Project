@@ -13,32 +13,24 @@
         <h2>License Details:</h2>
         <hr>
         <table>
+            {% for row in shop_license|slice:":2" %}
             <tr>
-                <td>Shop License:</td>
-                <td>{{ shop_license.license }}</td>
+                <td>{{row.0|title}}:</td>
+                <td>{{row.1}}</td>
             </tr>
-            <tr>
-                <td>Drug License:</td>
-                <td>{{ shop_license.drug_license }}</td>
-            </tr>
+            {% endfor %}
         </table>
     </section>
-    <section id='ph-sec'>
+    <section id='ph-detail'>
         <h2>Pharmacist Details:</h2>
         <hr>
         <table>
+            {% for row in shop_license|slice:"3:" %}
             <tr>
-                <td>Pharmacist Name:</td>
-                <td>{{ shop_license.ph_name }}</td>
+                <td>{{row.0|title}}:</td>
+                <td>{{row.1}}</td>
             </tr>
-            <tr>
-                <td>Degree</td>
-                <td>{{ shop_license.deg }}</td>
-            </tr>
-            <tr>
-                <td>College</td>
-                <td>{{ shop_license.college }}</td>
-            </tr>
+            {% endfor %}
         </table>
     </section>
 {% endblock %}

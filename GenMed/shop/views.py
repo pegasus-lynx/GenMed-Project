@@ -5,11 +5,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import MySQLdb
 
+#done
 def shopheader(request):
     return render(request, 'shop/shop_header.html', context = {})
 
 def connect():
     return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
+
+def get_medid(request,c,gen_name):
+    c.execute(
+        """ select med_id from med_info
+            where lower(gen_name) = %s """,
+            (gen_name.lower(),)
+    )
 
 def get_shopid(request,c):
     username = request.user.username
@@ -30,9 +38,16 @@ def get_userinfo(request,c,shop_id):
     )
     keys = [ 'username','first_name','last_name','email']
     res = c.fetchone()
-    user_info = {}
+    
+    # user_info = {}
+    # for i in range(len(keys)):
+    #     user_info[keys[i]]=res[i]
+
+    user_info = []
     for i in range(len(keys)):
-        user_info[keys[i]]=res[i]
+        user_info[i] = tuple(keys[i],res[i])
+
+    print(user_info)
     return user_info
 
 def get_license(request,c,shop_id):
@@ -45,10 +60,11 @@ def get_license(request,c,shop_id):
     )
     keys = [ "license", "drug_license", "ph_id","ph_name","deg","college"]
     res = c.fetchone()
-    shop_license = {}
+    shop_license = []
+    # for i in range(len(keys)):
+    #     shop_license[keys[i]]=res[i]
     for i in range(len(keys)):
-        shop_license[keys[i]]=res[i]
-    
+        shop_license.append([keys[i],res[i]])
     return shop_license
 
 def get_curstock(request,c,shop_id):
@@ -68,39 +84,49 @@ def get_curstock(request,c,shop_id):
 
     return cur_stock
 
+def get_shopinfo(request,c,shop_id):
+    c.execute(
+        """ select name,owner_name,mob_no,alt_no 
+            from shop_info where shop_id = %s""",
+            (shop_id,)
+    )
+
+    keys = ["shop_name","owner_name","mob_no","alt_no"]
+    res = c.fetchone();
+
+    # shop_info = {}
+    # for i in range(len(keys)):
+    #     shop_info[keys[i]]=res[i]
+
+    shop_info = []
+    for i in range(len(keys)):
+        shop_info.append([keys[i],res[i]])
+
+    return shop_info
+
+def get_shoploc(request,c,shop_id):
+    c.execute(
+        """ select city,district,state
+            from shop_loc where shop_id = %s """,
+            (shop_id,)
+    )
+    keys = ["city","district","state"]
+    res = c.fetchone();
+
+    shop_loc = []
+    for i in range(len(keys)):
+        shop_loc.append([keys[i],res[i]])
+
+    return shop_loc
 #dashboard done
 def dashboard(request):   
     if request.user.is_authenticated:
         db=connect()
         c=db.cursor()
+
         shop_id = get_shopid(request,c)[0]
-
-        print(shop_id)
-        # user_info = get_userinfo(request,c,shop_id)
-        c.execute(
-            """ select name,owner_name,mob_no,alt_no 
-                from shop_info where shop_id = %s""",
-                (shop_id,)
-        )
-
-        keys = ["shop_name","owner_name","mob_no","alt_no"]
-        res = c.fetchone();
-
-        shop_info = {}
-        for i in range(len(keys)):
-            shop_info[keys[i]]=res[i]
-        
-        c.execute(
-            """ select city,district,state
-                from shop_loc where shop_id = %s """,
-                (shop_id,)
-        )
-        keys = ["city","district","state"]
-        res = c.fetchone();
-
-        shop_loc = {}
-        for i in range(len(keys)):
-            shop_loc[keys[i]]=res[i]
+        shop_info = get_shopinfo(request,c,shop_id)
+        shop_loc = get_shoploc(request,c,shop_id)
 
         print('shop_id',shop_id)
         print('shop_loc',shop_loc)
@@ -120,39 +146,15 @@ def profile(request):
         get_query = 1
         shop_name = request.GET.get('shop-name')
 
-        c.execute(
-            """ select shop_id from shop
-                where name = %s """,
-                (shop_name,)
-        )
-        shop_id = c.fetchone()
+        shop_id = get_shopid(request,c,shop_id)
+
         if shop_id is None:
             context = { 'found':None, 'shop_name':shop_name , 'type':'shop'}
             return render(request, 'home/notfound.html', context)
         else:
-            c.execute(
-                """ select name,owner_name,mob_no,alt_no 
-                    from shop_info where shop_id = %s""",
-                    (shop_id,)
-            )
-            keys = ["shop-name","owner_name","mob_no","alt_no"]
-            res = c.fetchone();
-
-            shop_info = {}
-            for i in range(len(keys)):
-                shop_info[keys[i]]=res[i]
             
-            c.execute(
-                """ select street,city,district,state
-                    from shop_loc where shop_id = %s """,
-                    (shop_id,)
-            )
-            keys = ["street","city","district","state"]
-            res = c.fetchone();
-
-            shop_loc = {}
-            for i in range(len(keys)):
-                shop_loc[keys[i]]=res[i]
+            shop_info = get_shopinfo(request,c,shop_id)
+            shop_loc = get_shoploc(request,c,shop_id)
 
             c.execute(
                     """ select lat, lon from shop_loc
@@ -191,13 +193,12 @@ def cur_stock(request):
 #license done
 @login_required
 def license(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         
         db=connect()
         c=db.cursor()
         
         shop_id = get_shopid(request,c)
-        #user_info = get_userinfo(request,c)
         shop_license = get_license(request,c,shop_id)
         
         print(shop_license)
@@ -207,23 +208,22 @@ def license(request):
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
-            
+
+#update info template done      
 @login_required
 def update_info(request):
     db=connect()
     c=db.cursor()
-    # Updates shop location, shop basic info ....
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
+        cur_shop_info = get_shopinfo(request,c,shop_id)
+        cur_shop_loc = get_shoploc(request,c,shop_id)
         if request.method == 'POST':
             q = request.POST.dict()
-            
-            shop_id = get_shopid(request,c)
-            #user_info = get_userinfo(request,c)
-            cur_shop_info = get_shopinfo(request,c)
 
             update = False
-            keys = ["shop-name","owner_name","mob_no","alt_no"]
+            keys = ["shop_name","owner_name","mob_no","alt_no"]
 
             for i in keys:
                 if cur_shop_info[i] != q[i]:
@@ -237,12 +237,13 @@ def update_info(request):
                         where shop_id = %s """,
                         (*[ q[i] for i in keys ],shop_id,) 
                 )
+                db.commit()
 
             update = False
-            keys = ["street","city","district","state"]
+            keys = ["city","district","state"]
 
             for i in keys:
-                if cur_shop_info[i] != q[i]:
+                if cur_shop_loc[i] != q[i]:
                     update = True
                     break
 
@@ -253,34 +254,37 @@ def update_info(request):
                         where shop_id = %s """,
                         (*[ q[i] for i in keys ],shop_id,) 
                 )
-
-                if q['change_cord']:
-                    return redirect(reverse('update-cord'))
-                else:
-                    return redirect(reverse('dashboard'))
+                db.commit()
+            
+            return redirect(reverse('shop:dashboard'))
+                # if q['change_cord']:
+                #     return redirect(reverse('update_cord'))
+                # else:
+                #     return redirect(reverse('dashboard'))
 
         else:
-            context = {}
-            return render(request, 'shop/update/info.html', context)
+            context = { 'shop_id':shop_id, 'shop_info':cur_shop_info, 'shop_loc':cur_shop_loc }
+            return render(request, 'shop/updateinfo.html', context)
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
 
+#update_license template done
 @login_required
 def update_license(request):
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
+        cur_shop_license = get_license(request,c,shop_id)
         if request.method == 'POST':
             q = request.POST.dict()
-            cur_shop_license = get_license(request,c,shop_id)
-        
+            print(q)       
             update = False
-            keys = [ "license", "drug-license" ,"ph-name","deg","college"]
+            keys = [ "license", "drug-license", "ph_id" ,"ph_name","deg","college"]
             
-            for i in keys[:2]:
-                if cur_shop_license[i] != q[i]:
+            for i in range(0,2):
+                if cur_shop_license[i] != q[keys[i]]:
                     update = True
                     break
 
@@ -289,30 +293,29 @@ def update_license(request):
                     """ update shop_license
                         set license = %s, dr_license_no = %s
                         where shop_id = %s """,
-                        (q['license'],q['dr_license_no'],shop_id,) 
+                        (q['license'],q['drug_license'],shop_id,) 
                 )
+                db.commit()
             
             update = False
-            for i in keys[2:]:
-                if cur_shop_license[i] != q[i]:
+            for i in range(3,5):
+                if cur_shop_license[i] != q[keys[i]]:
                     update = True
                     break
 
             if update:
                 c.execute(
                     """ update ph_detail
-                        set ph_name = %s, deg = %s, college = %s
-                        where shop_id = %s """,
-                        (q['ph_name'],q['deg'],q['college'],shop_id,) 
+                        set name = %s, deg = %s, college = %s
+                        where ph_id = %s """,
+                        (q['ph_name'],q['deg'],q['college'],q['ph_id'],) 
                 )
+                db.commit()
 
-            return redirect(reverse('dashboard'))
+            return redirect(reverse('shop:dashboard'))
         else:
-            shop_license = get_license(request,c,shop_id)
-            heads = ["license", "drug_license", "ph_id","ph_name","deg","college"]
-            context = {'shop_id':shop_id , 'shop_license':shop_license }
-            return render(request, 'shop/update/license.html', context)
-
+            context = {'shop_id':shop_id , 'shop_license':cur_shop_license }
+            return render(request, 'shop/updatelicense.html', context)
 
 @login_required
 def update_stock(request):
@@ -361,12 +364,15 @@ def update_med(request):
             gen_name = c.fetchone()[0]
             print(gen_name)
             c.execute(
-                """ select units,price,mfg_date,exp_date,batch from avail
+                """ select med_id,units,price,batch,mfg_date,exp_date from avail
                     where med_id = %s and shop_id = %s """ ,
                     (med_id,shop_id,)
             )
 
-            med_details = list(c.fetchone())
+            res = list(c.fetchone())
+            med_details = []
+            for i in range(len(keys)):
+                med_details.append([keys[i],res[i]])
             print(med_details)
 
             context = { 'gen_name':gen_name, 'med_details':med_details }
@@ -381,10 +387,9 @@ def add_med(request):
     c=db.cursor()
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
+        keys = [ 'gen_name', 'units', 'price', 'mfg_date','exp_date', 'batch']
         if request.method == 'POST':
-            q= request.POST.dict()
-            keys = [ 'gen_name', 'units', 'price', 'mfg_date','exp_date', 'batch']
-            
+            q= request.POST.dict() 
             med_id = get_medid(request,c,q['gen_name'])
 
             if med_id is None:
@@ -405,7 +410,7 @@ def add_med(request):
             db.commit()
             return redirect(reverse('shop:update_stock'))
         else:
-            context = {}
+            context = { 'keys':keys, }
             return render(request,'shop/addmed.html',context)
     else:
         context = {}

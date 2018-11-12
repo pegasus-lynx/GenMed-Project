@@ -1,0 +1,33 @@
+{% extends 'shop/shop_header.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/updatelicense.css' %}">
+{% endblock %}
+
+{% block body_2 %}
+    <section id='upadtelicense_sec'>
+        <form action={% url 'shop:update_license' %} method="post">
+            {% csrf_token %}
+            <h2>License Details:</h2>
+            <hr>
+            {% for row in shop_license|slice:":2" %}
+                <p>
+                    <label for="{{row.0}}">{{ row.0|title }}:</label>
+                    <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
+                </p>
+            {% endfor %}
+            <h2>Pharmacist Details:</h2>
+            <hr>
+            {% for row in shop_license|slice:"3:" %}
+                <p>
+                    <label for="{{row.0}}">{{ row.0|title }}:</label>
+                    <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
+                </p>
+            {% endfor %}
+            <input type="hidden" name="ph_id" value="{{ shop_license.2.1 }}">
+            <input type="submit" value="Update" name='update_button'>
+        </form>
+    </section>
+{% endblock %}

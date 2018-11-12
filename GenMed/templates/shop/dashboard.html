@@ -13,32 +13,21 @@
         <h2>Basic Info:</h2>
         <hr>
         <table>
+            {% for row in shop_info %}
+                <tr>
+                    <td>{{row.0|title}}:</td>
+                    <td>{{row.1}}</td>
+                </tr>
+            {% endfor %}
             <tr>
-                <td>Shop Name:</td>
-                <td>{{ shop_info.shop_name }}</td>
-            </tr>
-            <tr>
-                <td>Owner Name:</td>
-                <td>{{ shop_info.owner_name }}</td>
-            </tr>
-        </table>
-    </section>
-    <section id='loc-sec'>
-        <h2>Contact Info:</h2>
-        <hr>
-        <table>
-            <tr>
-                <td>Address:</td>
-                <td>Empty Now<br>{{ shop_loc.city }},{{ shop_loc.district }},{{ shop_loc.state }}</td>
-            </tr>
-            <tr>
-                <td>Mob No.</td>
-                <td>{{ shop_info.mob_no }}</td>
-            </tr>
-            <tr>
-                <td>Alternate No.</td>
-                <td>{{ shop_info.alt_no }}</td>
+                <td>Shop_Address:</td>
+                <td>
+                    {% for row in shop_loc %}
+                        {{row.1}},
+                    {% endfor %}
+                </td>
             </tr>
         </table>
     </section>
 {% endblock %}
+

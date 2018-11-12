@@ -12,16 +12,6 @@
     <section id='stock-sec'>
         <h2>Current Stock:</h2>
         <hr>
-        <!-- <table>
-            {% for key,value in cur_stock.items %}
-                <tr>
-                    <td>{{key}}</td>
-                    {% for i in value %}
-                    <td>{{i}}</td>
-                    {% endfor%}
-                </tr>
-            {% endfor %}
-        </table> -->
         <table>
             <tr>
                 <th>Gen Name</th>
@@ -30,12 +20,12 @@
                 <th>Exp. Date</th>
                 <th>Batch</th>
             </tr>
-            {% for row in cur_stock %}
+            {% for key,value in cur_stock.items %}
                 <tr>
-                    <!-- <td>{{ row|slice:"1:" }}</td> -->
-                    {% for cell in row %}
-                        <td>{{ cell }}</td>
-                    {% endfor %}
+                    <td>{{key}}</td>
+                    {% for i in value %}
+                    <td>{{i}}</td>
+                    {% endfor%}
                 </tr>
             {% endfor %}
         </table>
