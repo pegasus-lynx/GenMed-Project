@@ -53,13 +53,19 @@ def get_license(request,c,shop_id):
 
 def get_curstock(request,c,shop_id):
     c.execute(
-        """ select med_info.gen_name,avail.units,avail.price,avail.exp_date
+        """ select med_info.gen_name,avail.units,avail.price,avail.mfg_date,avail.exp_date,avail.batch
             from med_info,avail
             where avail.shop_id = %s and med_info.med_id=avail.med_id""",
             (shop_id,)
     )
-    
-    cur_stock = list(c.fetchall())
+
+    # keys = ['med_id', 'gen_name', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
+    res = map(list,c.fetchall())
+
+    cur_stock = {}
+    for i in res:
+        cur_stock[i[0]]=i[1:]
+
     return cur_stock
 
 #dashboard done
@@ -163,7 +169,7 @@ def profile(request):
 
 #template done for curstock       
 @login_required
-def curstock(request):
+def cur_stock(request):
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated:
@@ -172,7 +178,6 @@ def curstock(request):
         c=db.cursor()
         
         shop_id = get_shopid(request,c)
-        #user_info = get_userinfo(request,c)
         cur_stock = get_curstock(request,c,shop_id)
         #preprocess the dates to paas as a string to the template
         print(cur_stock)
@@ -308,6 +313,7 @@ def update_license(request):
             context = {'shop_id':shop_id , 'shop_license':shop_license }
             return render(request, 'shop/update/license.html', context)
 
+
 @login_required
 def update_stock(request):
     db=connect()
@@ -315,27 +321,10 @@ def update_stock(request):
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         if request.method == 'POST':
-            q = request.POST.dict()
+            return redirect(reverse('shop:cur_stock'))
         else:
             cur_stock = get_curstock(request,c,shop_id)
-            heads = [ 'gen_name', 'units', 'price', 'exp_date', 'batch']
-            context = { 'shop_id':shop_id, 'cur_stock':cur_stock , 'heads':heads}
-            return render(request, 'shop/updatestock.html', context)
-    else:
-        context = {}
-        return render(request, 'home/login-page.html', context)
-
-@login_required
-def upadte_stock_2(request):
-    db=connect()
-    c=db.cursor()
-    if request.user.is_authenticated:
-        shop_id = get_shopid(request,c)
-        if request.method == 'POST':
-            q = request.POST.dict()
-        else:
-            cur_stock = get_curstock(request,c,shop_id)
-            heads = [ 'gen_name', 'units', 'price', 'exp_date', 'batch']
+            heads = [ 'gen_name', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
             context = { 'shop_id':shop_id, 'cur_stock':cur_stock , 'heads':heads}
             return render(request, 'shop/updatestock.html', context)
     else:
@@ -346,17 +335,78 @@ def upadte_stock_2(request):
 def update_med(request):
     db=connect()
     c=db.cursor()
+    med_id = request.GET.get('med_id')
 
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         if request.method == 'POST':
             q= request.POST.dict()
-            keys = [ 'med_id', 'units', 'price', 'exp_date']
+            keys = [ 'med_id', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
 
             c.execute(
-                """ update avail
+                """ update avail 
+                    set units = %s, price = %s, mfg_date = %s, exp_date = %s, batch = %s
+                    where med_id = %s and shop_id = %s """ ,
+                    (q['units'],q['price'],q['mfg_date'],q['exp_date'],q['batch'],q['med_id'],shop_id)
             )
 
+            db.commit()
+            return redirect(reverse('shop:update_stock'))
+        else:
+            c.execute(
+                """ select gen_name from med_info
+                    where med_id = %s """,
+                    (med_id,)
+            )
+            gen_name = c.fetchone()[0]
+            print(gen_name)
+            c.execute(
+                """ select units,price,mfg_date,exp_date,batch from avail
+                    where med_id = %s and shop_id = %s """ ,
+                    (med_id,shop_id,)
+            )
+
+            med_details = list(c.fetchone())
+            print(med_details)
+
+            context = { 'gen_name':gen_name, 'med_details':med_details }
+            return render(request,'shop/updatemed.html', context)
+    else:
+        context = {}
+        return render(request, 'home/login-page.html', context)
+
+@login_required
+def add_med(request):
+    db=connect()
+    c=db.cursor()
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
+        if request.method == 'POST':
+            q= request.POST.dict()
+            keys = [ 'gen_name', 'units', 'price', 'mfg_date','exp_date', 'batch']
+            
+            med_id = get_medid(request,c,q['gen_name'])
+
+            if med_id is None:
+                c.execute(
+                    """ insert into med_info values (%s) """,
+                    (q['gen_name'],)
+                )
+                db.commit()
+
+            med_id = get_medid(request,c,q['gen_name'])
+
+            c.execute(
+                """ insert into avail(med_id,shop_id,units,price,mfg_date,exp_date,batch) 
+                    values (%s,%s,%s,%s,%s,%s,%s)""" ,
+                    (med_id,shop_id,q['units'],q['price'],q['mfg_date'],q['exp_date'],q['batch'])
+            )
+
+            db.commit()
+            return redirect(reverse('shop:update_stock'))
+        else:
+            context = {}
+            return render(request,'shop/addmed.html',context)
     else:
         context = {}
         return render(request, 'home/login-page.html', context)

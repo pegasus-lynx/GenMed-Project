@@ -32,6 +32,7 @@
             </tr>
             {% for row in cur_stock %}
                 <tr>
+                    <!-- <td>{{ row|slice:"1:" }}</td> -->
                     {% for cell in row %}
                         <td>{{ cell }}</td>
                     {% endfor %}
