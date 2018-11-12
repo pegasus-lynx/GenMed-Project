@@ -18,6 +18,9 @@
                 <div class="fields"> 
                         <h1>Login</h1>
                 </div>
+                {% if error%}
+                    <p>Username/Password is incorrect</p>
+                {% endif %}
                 <form action={% url 'home:logIn' %} method="POST" id="login-form">
                     {% csrf_token %}
                     <input type="text" placeholder="Username" class="login-input" name="username"/>

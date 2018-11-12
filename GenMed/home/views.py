@@ -25,9 +25,12 @@ def logIn(request):
         if user is not None:
             login(request,user)
             print(str(user))
-            return redirect(reverse('dashboard'))
+            return redirect(reverse('shop:dashboard'))
+        else:
+            context = { 'error':True }
+            return render(request, 'home/login-page.html', context)
     else:
-        context = {}
+        context = { 'error':False }
         return render(request, 'home/login-page.html', context)
 
 def register(request):
@@ -84,7 +87,7 @@ def register(request):
         )
         print(request.POST.dict())
         #return HttpResponse(request.POST.dict())
-        return redirect(reverse('update-stock'))
+        return redirect(reverse('shop:update-stock'))
     else:
         context = {}
         return render(request, 'home/signup-page.html', context)
