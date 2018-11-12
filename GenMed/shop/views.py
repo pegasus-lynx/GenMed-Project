@@ -51,6 +51,18 @@ def get_license(request,c,shop_id):
     
     return shop_license
 
+def get_curstock(request,c,shop_id):
+    c.execute(
+        """ select med_info.gen_name,avail.units,avail.price,avail.exp_date
+            from med_info,avail
+            where avail.shop_id = %s and med_info.med_id=avail.med_id""",
+            (shop_id,)
+    )
+    
+    cur_stock = list(c.fetchall())
+    return cur_stock
+
+#dashboard done
 def dashboard(request):   
     if request.user.is_authenticated:
         db=connect()
@@ -94,6 +106,7 @@ def dashboard(request):
         context = {}
         return render(request, 'home/login-page.html', context)    
 
+#profile done
 def profile(request):
     db=connect()
     c=db.cursor()
@@ -147,35 +160,30 @@ def profile(request):
         get_query = 0
         context = { 'get_query':get_query, }
     return render(request, 'medicine/info.html', context)
-       
+
+#template done for curstock       
 @login_required
 def curstock(request):
     db=connect()
     c=db.cursor()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         
         db=connect()
         c=db.cursor()
         
         shop_id = get_shopid(request,c)
         #user_info = get_userinfo(request,c)
-
-        c.execute(
-            """ select med_info.gen_name,avail.units,avail.price,avail.batch,avail.exp_date
-                from med_info outer join avail using (med_id)
-                where shop_id = %s """,
-                (shop_id,)
-        )
-
-        cur_stocks = list(c.fetchall())
-
-        context = { 'shop_id':shop_id, 'user_info':user_info,  'cur_stock':cur_stock }
+        cur_stock = get_curstock(request,c,shop_id)
+        #preprocess the dates to paas as a string to the template
+        print(cur_stock)
+        context = { 'shop_id':shop_id, 'cur_stock':cur_stock }
         return render(request, 'shop/curstock.html', context)
 
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
 
+#license done
 @login_required
 def license(request):
     if request.user.is_authenticated():
@@ -185,7 +193,7 @@ def license(request):
         
         shop_id = get_shopid(request,c)
         #user_info = get_userinfo(request,c)
-        shop_license = get_license(request,c)
+        shop_license = get_license(request,c,shop_id)
         
         print(shop_license)
 
@@ -257,13 +265,12 @@ def update_info(request):
 def update_license(request):
     db=connect()
     c=db.cursor()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
         if request.method == 'POST':
             q = request.POST.dict()
-            
-            shop_id = get_shopid(request,c)
             #user_info = get_userinfo(request,c)
-            cur_shop_license = get_license(request,c)
+            cur_shop_license = get_license(request,c,shop_id)
         
             update = False
             keys = [ "license", "drug-license" ,"ph-name","deg","college"]
@@ -297,21 +304,21 @@ def update_license(request):
 
             return redirect(reverse('dashboard'))
         else:
-            context = {}
+            shop_license = get_license(request,c,shop_id)
+            context = {'shop_id':shop_id , 'shop_license':shop_license }
             return render(request, 'shop/update/license.html', context)
 
 @login_required
 def update_stock(request):
     db=connect()
     c=db.cursor()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
+        shop_id = get_shopid(request,c)
         if request.method == 'POST':
             q = request.POST.dict()
-        
-            shop_id = get_shopid(request,c)
-            #user_info = get_userinfo(request,c)
         else:
-            context = {}
+            cur_stock = get_curstock(request,c,shop_id)
+            context = { 'shop_id':shop_id, 'cur_stock':cur_stock }
             return render(request, 'shop/update/stock.html', context)
     else:
         context = {}
