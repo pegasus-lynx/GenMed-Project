@@ -1,5 +1,6 @@
 {% extends 'shop/shop_header.html' %}
 
+{% load customtags %}
 {% load static %}
 
 {% block head_2 %}
@@ -13,27 +14,34 @@
     <section id='stock-sec'>
         <h2>Update Stock:</h2>
         <hr>
-        <form action="" method="post">
+        <form method="post">
+            {% csrf_token %}
             <table>
                 <tr>
                     <th>Gen Name</th>
                     <th>Units</th>
                     <th>Price/Unit</th>
+                    <th>Mfg. Date</th>
                     <th>Exp. Date</th>
                     <th>Batch</th>
+                    <th></th>
                 </tr>
-                {% for row in cur_stock %}
+                {% for key in med_ids %}
                     <tr>
-                        {% for cell in row %}
-                            <td><input type="text" name= id="" value="{{ cell }}"></td>
+                        {% for cell in cur_stock|get:key %}
+                            <td>{{ cell }}</td>
                         {% endfor %}
+                        <form action={% url 'shop:update_med' %} method="get">
+                            {% csrf_token %}
+                        <input type="hidden" name="med_id" value="{{ key }}">
+                        <td> <input type="submit" value="Edit" name="updatemed_btn"></td>
+                        </form>
                     </tr>
                 {% endfor %}
             </table>
-            <input type="submit" value='Update' id='up_stk_button' />
-            <input type="button" value='Add Field' id='add_button' />
+            <input type="submit" value='Update' name='submit'/>
+            <input type="submit" value='Add Field' name='submit'/>
         </form>
     </section>
-
-    <script src="{% static shop/upadtestock.js %}"></script>
 {% endblock %}
+

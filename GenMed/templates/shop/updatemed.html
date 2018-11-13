@@ -18,10 +18,17 @@
                     <label for="gen_name">Gen Name:</label>
                     <input type="text" name="gen_name" id="gen_name" disabled value="{{ gen_name }}">
                 </p>
-            {% for row in med_details %}
+                <input type="hidden" name="{{ med_details.0.0 }}" value="{{ med_details.0.1 }}">
+            {% for row in med_details|slice:'1:4' %}
                 <p>
                     <label for="{{row.0}}">{{ row.0|title }}:</label>
                     <input type="text" name="{{row.0}}" id="{{row.0}}"" value="{{row.1}}">
+                </p>
+            {% endfor %}
+            {% for row in med_details|slice:'4:' %}
+                <p>
+                    <label for="{{row.0}}">{{ row.0|title }}:</label>
+                    <input type="date" name="{{row.0}}" id="{{row.0}}"" value="{{row.1}}">
                 </p>
             {% endfor %}
             <input type="submit" value="Update" name='update_button'>

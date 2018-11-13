@@ -14,10 +14,16 @@
             {% csrf_token %}
             <h2>Medicine Details:</h2>
             <hr>
-            {% for row in keys %}
+            {% for row in keys|slice:':4' %}
                 <p>
                     <label for="{{row}}">{{ row|title }}:</label>
                     <input type="text" name="{{row}}" id="{{row}}"" value="">
+                </p>
+            {% endfor %}
+            {% for row in keys|slice:'4:' %}
+                <p>
+                    <label for="{{row}}">{{ row|title }}:</label>
+                    <input type="date" name="{{row}}" id="{{row}}"" value="">
                 </p>
             {% endfor %}
             <input type="submit" value="Update" name='update_button'>
