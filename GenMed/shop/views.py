@@ -19,6 +19,8 @@ def get_medid(request,c,gen_name):
             (gen_name.lower(),)
     )
 
+    return c.fetchone()[0]
+
 def get_shopid(request,c):
     username = request.user.username
     print('-'*100)
@@ -69,7 +71,7 @@ def get_license(request,c,shop_id):
 
 def get_curstock(request,c,shop_id):
     c.execute(
-        """ select med_info.gen_name,avail.units,avail.price,avail.mfg_date,avail.exp_date,avail.batch
+        """ select med_info.med_id,med_info.gen_name,avail.units,avail.price,avail.mfg_date,avail.exp_date,avail.batch
             from med_info,avail
             where avail.shop_id = %s and med_info.med_id=avail.med_id""",
             (shop_id,)
@@ -82,6 +84,7 @@ def get_curstock(request,c,shop_id):
     for i in res:
         cur_stock[i[0]]=i[1:]
 
+    print(cur_stock)
     return cur_stock
 
 def get_shopinfo(request,c,shop_id):
@@ -322,13 +325,20 @@ def update_stock(request):
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated:
+        q = request.POST.dict()
         shop_id = get_shopid(request,c)
         if request.method == 'POST':
-            return redirect(reverse('shop:cur_stock'))
+            if q['submit'] == 'Update':
+                return redirect(reverse('shop:cur_stock'))
+            else:
+                return redirect(reverse('shop:add_med'))
         else:
             cur_stock = get_curstock(request,c,shop_id)
+            med_ids = list(cur_stock.keys())
+            med_ids.sort()
+
             heads = [ 'gen_name', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
-            context = { 'shop_id':shop_id, 'cur_stock':cur_stock , 'heads':heads}
+            context = { 'shop_id':shop_id, 'cur_stock': cur_stock , 'heads':heads, 'med_ids':med_ids}
             return render(request, 'shop/updatestock.html', context)
     else:
         context = {}
@@ -342,17 +352,16 @@ def update_med(request):
 
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
+        keys = [ 'med_id', 'units', 'price','batch', 'mfg_date', 'exp_date']
         if request.method == 'POST':
             q= request.POST.dict()
-            keys = [ 'med_id', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
-
+            
             c.execute(
                 """ update avail 
                     set units = %s, price = %s, mfg_date = %s, exp_date = %s, batch = %s
                     where med_id = %s and shop_id = %s """ ,
                     (q['units'],q['price'],q['mfg_date'],q['exp_date'],q['batch'],q['med_id'],shop_id)
             )
-
             db.commit()
             return redirect(reverse('shop:update_stock'))
         else:
@@ -373,6 +382,9 @@ def update_med(request):
             med_details = []
             for i in range(len(keys)):
                 med_details.append([keys[i],res[i]])
+
+            med_details[4][1]=str(med_details[4][1])
+            med_details[5][1]=str(med_details[5][1])
             print(med_details)
 
             context = { 'gen_name':gen_name, 'med_details':med_details }
@@ -387,26 +399,25 @@ def add_med(request):
     c=db.cursor()
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
-        keys = [ 'gen_name', 'units', 'price', 'mfg_date','exp_date', 'batch']
+        keys = [ 'gen_name', 'units', 'price', 'batch', 'mfg_date','exp_date']
         if request.method == 'POST':
-            q= request.POST.dict() 
+            q = request.POST.dict() 
             med_id = get_medid(request,c,q['gen_name'])
 
             if med_id is None:
                 c.execute(
-                    """ insert into med_info values (%s) """,
+                    """ insert into med_info(gen_name) values (%s) """,
                     (q['gen_name'],)
                 )
                 db.commit()
 
             med_id = get_medid(request,c,q['gen_name'])
-
+            print(med_id)
             c.execute(
                 """ insert into avail(med_id,shop_id,units,price,mfg_date,exp_date,batch) 
                     values (%s,%s,%s,%s,%s,%s,%s)""" ,
                     (med_id,shop_id,q['units'],q['price'],q['mfg_date'],q['exp_date'],q['batch'])
             )
-
             db.commit()
             return redirect(reverse('shop:update_stock'))
         else:
