@@ -71,7 +71,7 @@ def get_license(request,c,shop_id):
 
 def get_curstock(request,c,shop_id):
     c.execute(
-        """ select med_info.med_id,med_info.gen_name,avail.units,avail.price,avail.mfg_date,avail.exp_date,avail.batch
+        """ select med_info.med_id,med_info.gen_name,avail.units,avail.price,avail.batch,avail.mfg_date,avail.exp_date
             from med_info,avail
             where avail.shop_id = %s and med_info.med_id=avail.med_id""",
             (shop_id,)

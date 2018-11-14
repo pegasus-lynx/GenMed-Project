@@ -66,3 +66,9 @@ header .bg-image button p{
     margin-top: 100px;
     margin-bottom: 100px;
 }
+
+hr {
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}

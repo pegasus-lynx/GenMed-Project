@@ -1,8 +1,3 @@
-hr {
-    height: 1px;
-    background: #333; 
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
-}
 
 #search-result h1 {
 	color: #333; 

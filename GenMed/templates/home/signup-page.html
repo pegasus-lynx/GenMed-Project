@@ -7,43 +7,55 @@
 
 
 {% block body %}
-    <section class="features" id="signup-form"></section>
+    <header class="base-header">
+      <div class="bg-image">
+          <h1>GenMed-Project</h1>
+          <h3>Cheaper . Reliable . Effective</h3>
+      </div>
+    </header>
+
+    <div class='container'>
+      <section class="features" id="register-sec">
+        <h1 style="text-align: center">Register with the GenMed-Project</h1>
+        <hr>
         <form id="regForm" action={% url 'home:register' %} method="POST">
             {% csrf_token %}
-            <h1 style="text-align: center">Register with the GenMed-Project</h1>
+            
             <!-- One "tab" for each step in the form: -->
-            <div class="tab">User Profile:
+            <div class="tab"> <h3 class='tab-head'>User Profile</h3>  
               <p><input placeholder="Username..." oninput="this.className = ''" name="username"></p>
               <p><input type="email" placeholder="E-mail..." oninput="this.className = ''" name="email"></p>
               <p><input type="password" placeholder="Password..." oninput="this.className = ''" name="password"></p>
             </div>
-            <div class="tab">Shop Info:
+            <div class="tab"> <h3 class='tab-head'>Shop Info</h3> 
               <p><input placeholder="Shop Name..." oninput="this.className = ''" name="shop_name"></p>
               <p><input placeholder="Owner Name..." oninput="this.className = ''" name="owner"></p>
               <p><input placeholder="Mob No..." oninput="this.className = ''" name="mob_no"></p>
               <p><input placeholder="Alt No..." oninput="this.className = ''" name="alt_no"></p>
             </div>
-            <div class="tab">License Detail:
+            <div class="tab"> <h3 class='tab-head'>License Detail</h3> 
               <p><input placeholder="License..." oninput="this.className = ''" name="license"></p>
               <p><input placeholder="Drug License..." oninput="this.className = ''" name="drug_license"></p>
               <p><input placeholder="Drug License Type..." oninput="this.className = ''" name="drug_license_type"></p>
             </div>
-            <div class="tab">Pharmacist Detail:
+            <div class="tab"> <h3 class='tab-head'>Pharmacist Detail</h3> 
               <p><input placeholder="Name..." oninput="this.className = ''" name="ph_name"></p>
               <p><input placeholder="Degree..." oninput="this.className = ''" name="ph_deg"></p>
               <p><input placeholder="College..." oninput="this.className = ''" name="ph_college"></p>
             </div>
-            <div class="tab">Address:
+            <div class="tab"> <h3 class='tab-head'>Address</h3>
                 <p><input placeholder="City..." oninput="this.className = ''" name="city"></p>
                 <p><input placeholder="District..." oninput="this.className = ''" name="district"></p>
-                <p><input placeholder="Statee..." oninput="this.className = ''" name="state"></p>
+                <p><input placeholder="State..." oninput="this.className = ''" name="state"></p>
                 <input type="hidden" name="lat" id="lat">
                 <input type="hidden" name="lon" id="lon">
             </div>
             <div style="overflow:auto;">
               <div style="float:right;">
+                <p id='btn-para'>
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                 <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </p>
               </div>
             </div>
             <!-- Circles which indicates the steps of the form: -->
@@ -56,6 +68,7 @@
             </div>
           </form>
     </section>
+    </div>
           
           <script src="{% static 'home/signup-page.js' %}"></script>
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
