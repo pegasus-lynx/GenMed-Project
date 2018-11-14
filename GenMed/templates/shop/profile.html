@@ -9,36 +9,31 @@
 {% block body_2 %}
 <div class='container' id='main'>
     <section id='info-sec'>
-        <h2>Basic Info:</h2>
+        <h1 class='sec-head'>Basic Info</h1>
         <hr>
         <table>
             <tr>
-                <td>Shop Name:</td>
-                <td>{{ shop_info.shop_name }}</td>
+                <th>Details</th>
+                <th>Info</th>
             </tr>
+            {% for row in shop_info %}
+                <tr>
+                    <td class='col1'>{{row.0|title}}:</td>
+                    <td class='col2'>{{row.1}}</td>
+                </tr>
+            {% endfor %}
             <tr>
-                <td>Owner Name:</td>
-                <td>{{ shop_info.owner_name }}</td>
+                <td class='col1'>Shop_Address:</td>
+                <td class='col2'>
+                    {% for row in shop_loc %}
+                        {{row.1}},
+                    {% endfor %}
+                </td>
             </tr>
         </table>
     </section>
-    <section id='loc-sec'>
-        <h2>Contact Info:</h2>
-        <hr>
-        <table>
-            <tr>
-                <td>Address:</td>
-                <td>Empty Now<br>{{ shop_loc.city }},{{ shop_loc.district }},{{ shop_loc.state }}</td>
-            </tr>
-            <tr>
-                <td>Mob No.</td>
-                <td>{{ shop_info.mob_no }}</td>
-            </tr>
-            <tr>
-                <td>Alternate No.</td>
-                <td>{{ shop_info.alt_no }}</td>
-            </tr>
-        </table>
+    <section id='map'>
+
     </section>
 </div>
 {% endblock %}

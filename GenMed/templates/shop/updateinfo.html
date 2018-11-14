@@ -9,10 +9,10 @@
 <!-- context = { 'shop_id':shop_id, 'shop_info':cur_shop_info, 'shop_loc':cur_shop_loc } -->
 
 {% block body_2 %}
-    <section id='upadteinfo-sec'>
+    <section id='updateinfo-sec'>
         <form action={% url 'shop:update_info' %} method="post">
             {% csrf_token %}
-            <h2>Basic Info:</h2>
+            <h1 class='sec-head'>Basic Info</h1>
             <hr>
             <!-- {% for key,value in shop_info.items %}
                 <p>
@@ -26,7 +26,7 @@
                     <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
                 </p>
             {% endfor %}
-            <h2>Shop Location:</h2>
+            <h1 class='sec-head'>Shop Location</h1>
             <hr>
             {% for row in shop_loc %}
                 <p>
@@ -34,7 +34,7 @@
                     <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
                 </p>
             {% endfor %}
-            <p>Do you want to update the coordinates of your shop ? &nbsp;&nbsp; <input type="checkbox" name="change_cord"></p>
+            <p id='l-para'>Do you want to update the coordinates of your shop ? &nbsp;&nbsp; <input type="checkbox" name="change_cord"></p>
             <input type="submit" value="Update" name='update_button'>
         </form>
 

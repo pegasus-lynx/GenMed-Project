@@ -10,25 +10,33 @@
 
 {% block body_2 %}
     <section id='license-sec'>
-        <h2>License Details:</h2>
+        <h1 class='sec-head'>License Details</h1>
         <hr>
         <table>
+            <tr>
+                <th class='t1col1'>Details</th>
+                <th class='t1col2'id='last-th'>Info</th>
+            </tr>
             {% for row in shop_license|slice:":2" %}
             <tr>
-                <td>{{row.0|title}}:</td>
-                <td>{{row.1}}</td>
+                <td class='t1col1'>{{row.0|title}}:</td>
+                <td class='t1col2'>{{row.1}}</td>
             </tr>
             {% endfor %}
         </table>
     </section>
     <section id='ph-detail'>
-        <h2>Pharmacist Details:</h2>
+        <h1 class='sec-head'>Pharmacist Details</h1>
         <hr>
         <table>
+            <tr>
+                <th class='t2col1'>Details</th>
+                <th class='t2col2' id='last-th'>Info</th>
+            </tr>
             {% for row in shop_license|slice:"3:" %}
             <tr>
-                <td>{{row.0|title}}:</td>
-                <td>{{row.1}}</td>
+                <td class='t2col1'>{{row.0|title}}:</td>
+                <td class='t2col2'>{{row.1}}</td>
             </tr>
             {% endfor %}
         </table>

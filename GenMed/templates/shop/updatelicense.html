@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block body_2 %}
-    <section id='upadtelicense_sec'>
+    <section id='updatelicense-sec'>
         <form action={% url 'shop:update_license' %} method="post">
             {% csrf_token %}
-            <h2>License Details:</h2>
+            <h1 class='sec-head'>License Details</h1>
             <hr>
             {% for row in shop_license|slice:":2" %}
                 <p>
@@ -18,7 +18,7 @@
                     <input type="text" name="{{row.0}}" id="{{row.0}}" value="{{ row.1 }}">
                 </p>
             {% endfor %}
-            <h2>Pharmacist Details:</h2>
+            <h1 class='sec-head'>Pharmacist Details</h1>
             <hr>
             {% for row in shop_license|slice:"3:" %}
                 <p>

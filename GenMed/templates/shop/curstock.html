@@ -10,20 +10,21 @@
 
 {% block body_2 %}
     <section id='stock-sec'>
-        <h2>Current Stock:</h2>
+        <h1 class='sec-head'>Current Stock</h1>
         <hr>
         <table>
             <tr>
                 <th>Gen Name</th>
                 <th>Units</th>
                 <th>Price/Unit</th>
-                <th>Exp. Date</th>
                 <th>Batch</th>
+                <th>Mfg. Date</th>
+                <th id='last-th'>Exp. Date</th>
             </tr>
             {% for key,value in cur_stock.items %}
                 <tr>
                     {% for i in value %}
-                    <td>{{i}}</td>
+                    <td class="col{{ forloop.counter }}">{{i}}</td>
                     {% endfor%}
                 </tr>
             {% endfor %}

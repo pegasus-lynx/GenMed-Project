@@ -4,43 +4,46 @@
 {% load static %}
 
 {% block head_2 %}
-    <link rel="stylesheet" type="text/css" href="{% static 'shop/upadtestock.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/updatestock.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 {% endblock %}
 
 
 
 {% block body_2 %}
     <section id='stock-sec'>
-        <h2>Update Stock:</h2>
+        <h1 class='sec-head'>Update Stock</h1>
         <hr>
-        <form method="post">
+        <form method="post" id='main-form'>
             {% csrf_token %}
             <table>
                 <tr>
-                    <th>Gen Name</th>
-                    <th>Units</th>
-                    <th>Price/Unit</th>
-                    <th>Mfg. Date</th>
-                    <th>Exp. Date</th>
-                    <th>Batch</th>
-                    <th></th>
+                    <th class='col1'>Gen Name</th>
+                    <th class='col2'>Units</th>
+                    <th class='col3'>Price/Unit</th>
+                    <th class='col4'>Batch</th>
+                    <th class='col5'>Mfg. Date</th>
+                    <th class='col6'>Exp. Date</th>
+                    <th class='col7' id='last-th'>Edit</th>
                 </tr>
                 {% for key in med_ids %}
                     <tr>
                         {% for cell in cur_stock|get:key %}
-                            <td>{{ cell }}</td>
+                            <td class="col{{ forloop.counter }}">{{ cell }}</td>
                         {% endfor %}
                         <form action={% url 'shop:update_med' %} method="get">
                             {% csrf_token %}
-                        <input type="hidden" name="med_id" value="{{ key }}">
-                        <td> <input type="submit" value="Edit" name="updatemed_btn"></td>
+                        <input type="hidden" name="med_id" class='get-btn' value="{{ key }}">
+                        <td class='col7'> <input type="submit" value="Edit" name="updatemed_btn" /></td>
                         </form>
                     </tr>
                 {% endfor %}
             </table>
-            <input type="submit" value='Update' name='submit'/>
-            <input type="submit" value='Add Field' name='submit'/>
+            <p>
+            <input type="submit" class='main-btn' value='Update' name='submit'/>
+            <input type="submit" class='main-btn' value='Add Field' name='submit'/>
+            </p>
         </form>
     </section>
 {% endblock %}

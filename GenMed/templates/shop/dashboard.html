@@ -10,18 +10,22 @@
 
 {% block body_2 %}
     <section id='info-sec'>
-        <h2>Basic Info:</h2>
+        <h1 class='sec-head'>Basic Info</h1>
         <hr>
         <table>
+            <tr>
+                <th>Details</th>
+                <th>Info</th>
+            </tr>
             {% for row in shop_info %}
                 <tr>
-                    <td>{{row.0|title}}:</td>
-                    <td>{{row.1}}</td>
+                    <td class='col1'>{{row.0|title}}:</td>
+                    <td class='col2'>{{row.1}}</td>
                 </tr>
             {% endfor %}
             <tr>
-                <td>Shop_Address:</td>
-                <td>
+                <td class='col1'>Shop_Address:</td>
+                <td class='col2'>
                     {% for row in shop_loc %}
                         {{row.1}},
                     {% endfor %}

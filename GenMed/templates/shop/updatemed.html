@@ -10,10 +10,10 @@
 
 {% block body_2 %}
     <section id='addmed-sec'>
+        <h1 class='sec-head'>Medicine Details:</h1>
+        <hr>
         <form action={% url 'shop:update_med' %} method="post">
             {% csrf_token %}
-            <h2>Medicine Details:</h2>
-            <hr>
                 <p>
                     <label for="gen_name">Gen Name:</label>
                     <input type="text" name="gen_name" id="gen_name" disabled value="{{ gen_name }}">
