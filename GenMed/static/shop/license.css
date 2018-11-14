@@ -1,0 +1,76 @@
+#license-sec, #ph-detail {
+    padding-top: 50px;
+}
+
+hr {
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 50px;
+}
+
+.sec-head {
+    text-align: center;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#license-sec > table, #ph-detail > table {
+    
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1.2rem;
+    border: 1px solid black;
+}
+
+#license-sec table {
+    margin-left: 30%;
+    width: 40%;
+}
+
+#ph-detail table {
+    margin-left: 25%;
+    width: 50%;
+}
+
+.t1col1{
+    width: 50%;
+}
+
+.t1col2 {
+    width: 50%;
+    text-align: center;
+}
+
+.t2col1 {
+    width: 40%;
+}
+
+.t2col2 {
+    width: 60%;
+}
+
+tr th {
+    color: white;
+    background: #333;
+    padding: 3px 10px;
+    border-right: 1px solid white;
+    text-align:center;
+}
+
+#last-th {
+    border-right: 1px solid black;   
+}
+
+tr td {
+    padding: 3px 10px;
+    border-right: 1px solid black;
+}
+
+tr {
+    background: #e0e0eb
+}
+
+tr:nth-child(even){
+    background: #ffffff;
+}

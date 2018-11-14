@@ -1,0 +1,95 @@
+#stock-sec {
+    padding-top: 50px;
+}
+
+hr {
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 50px;
+}
+
+.sec-head {
+    text-align: center;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#stock-sec > form {
+    width: 70%;
+    margin-left: 15%;
+}
+
+#main-form > table {
+    /* margin-left: 10%; */
+    width: 100%; 
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1.2rem;
+    border: 1px solid black;
+    margin-bottom: 30px;
+}
+
+.get-btn {
+    font-family: FontAwesome;
+}
+
+.col1 {
+    width: 20%;
+}
+
+.col2 , .col3 {
+    width: 10%;
+    text-align: center;
+}
+
+.col4 {
+    width: 15%;
+    text-align: center;
+}
+
+ .col5 , .col6 {
+    width: 20%;
+    text-align: center;
+}
+
+.col7 {
+    width: 5%;
+}
+
+tr th {
+    color: white;
+    background: #333;
+    padding: 3px 10px;
+    border-right: 1px solid white;
+    text-align:center;
+}
+
+#last-th {
+    border-right: 1px solid black;   
+}
+
+tr td {
+    padding: 3px 10px;
+    border-right: 1px solid black;
+}
+
+tr {
+    background: #e0e0eb
+}
+
+tr:nth-child(even){
+    background: #ffffff;
+}
+
+.main-btn {
+    border-radius: 50px;
+    padding: 5px 10px;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: bold;
+    width: 20%;
+    margin-right: 20px;
+    margin-top: 30px;
+    background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+    color: white;
+}
