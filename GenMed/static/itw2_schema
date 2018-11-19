@@ -7,8 +7,6 @@ create table shop (
 	username varchar(16),
 	email varchar(32),
 	passwd varchar(32), 
-	first_name varchar(32),
-	last_name varchar(32),
 	primary key (shop_id)
 );
 
@@ -31,7 +29,7 @@ create table shop_loc (
 	district varchar(32),
 	city varchar(32),
 	primary key (loc_id),
-	constraint shop-loc foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade
+	foreign key (shop_id) references shop(shop_id) on delete cascade on update cascade
 );
 
 create table ph_detail (
@@ -40,6 +38,7 @@ create table ph_detail (
 	deg varchar(8),
 	college varchar(32),
 	primary key (ph_id)
+
 );
 
 create table shop_license (
@@ -84,41 +83,33 @@ create table avail (
 	constraint pk_med primary key (med_id,shop_id)
 );
 
-create table extra (
+create table reorder(
 	med_id int,
 	shop_id int,
+	units int,
 	constraint pk_med primary key (med_id,shop_id)
 );
 
-delimiter $$
-create trigger email_check_insert after insert on shop for each row
-begin
-if new.email not like '%_@__%' then
-	signal sqlstate '45000' set MESSAGE_TEXT = '[table:shop] - email column is not valid';
-end if;
-end$$
+alter table shop add column first_name varchar(32);
+
+alter table shop add column last_name varchar(32);
 
 delimiter $$
-create trigger exp_date_check before update on avail for each row
-begin
-if old.exp_date < curdate() then
-	signal sqlstate '45000' set message_text = 'The units of current batch have expired';
-end if;
-end$$
+create trigger unit_upd after update on avail for each row IF NEW.units<0 THEN SET NEW.units = 0; END IF;
+end $$
+
+// Another idea for trigger is that if a shop owner adds a new medicine which is not present in our databases then it //is added in the med info table automatically by the trigger
 
 delimiter $$
-create trigger email_check_update after update on shop for each row
-begin
-if new.email not like '%_@___%' then
-	signal sqlstate '45000' set MESSAGE_TEXT = '[table:shop] - email column is not valid';
-end if;
-end$$
+create trigger exp_check before update on avail for each row
+IF NEW.exp_date < curdate() THEN 
+SET NEW.units = 0;
+END IF;
+end $$
 
 delimiter $$
-create trigger units_check after update on avail for each row
-begin
-if NEW.units < 0 then
-	insert into extra values(NEW.med_id,NEW.shop_id);
-	signal sqlstate '45000' set MESSAGE_TEXT = "The number of units left are less than the required units !!";
-end if;
-end$$
+create trigger min_level_check after update on avail for each row
+IF NEW.units < 25 THEN
+INSERT into reorder values (NEW.med_id, NEW.shop_id, 50);
+END IF;
+end $$
