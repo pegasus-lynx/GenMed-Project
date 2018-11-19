@@ -1,20 +1,15 @@
-{% extends 'home/base-header.html' %}
+{% extends 'home/homeheader.html' %}
 
 {% load static %}
-{% block head %}
+{% block head2 %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/homepage.css' %}">
 {% endblock %}
 
+{% block header %}
+    <button action="#description"><p>READ MORE  </p> <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+{% endblock %}
 
-{% block body %}
-    <header>
-        <div class="bg-image">
-            <h1>GenMed-Project</h1>
-            <h3>Cheaper . Reliable . Effective</h3>
-            <button action="#description"><p>READ MORE  </p> <i class="fa fa-angle-down" aria-hidden="true"></i></button>
-        </div>
-    </header>
-
+{% block body2 %}
     <section id="description" class="features">
         <div class="container">
             <div class="row m-b-lg">

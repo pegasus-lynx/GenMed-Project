@@ -1,0 +1,24 @@
+{% extends 'baseheader.html' %}
+{% load static %}
+    {%  block head %}
+        <link rel="stylesheet" type="text/css" href="{% static 'home/homeheader.css' %}">
+        {% block head2 %}
+        {% endblock %}
+    {% endblock %}
+
+
+</head>
+{% block body %}
+    <header>
+        <div class="bg-image">
+            <h1>GenMed-Project</h1>
+            <h3>Cheaper . Reliable . Effective</h3>
+            {% block header %}
+            {% endblock %}
+        </div>
+    </header>
+
+    {% block body2 %}
+    {% endblock %}
+
+{% endblock %}

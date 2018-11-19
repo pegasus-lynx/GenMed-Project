@@ -1,0 +1,114 @@
+/* Section-styling */
+#register-sec {
+    color: #676a6c;
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 80%;
+    margin-left: 10%;
+}
+
+#register-sec>h1 {
+    color: #676a6c;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#register-sec>hr{
+    height: 1px;
+    background: #333; 
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 50px;
+}
+
+.tab-head {
+    text-align: center;
+    font-family: 'Fira Sans', sans-serif;
+    margin-bottom: 30px;
+}
+
+/* Style the form */
+#regForm {
+    background-color: #ffffff;
+    margin: 20px auto;
+    padding: 40px;
+    padding-top: 0;
+    width: 70%;
+    min-width: 300px;
+  }
+  
+  /* Style the input fields */
+  input {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    border-radius: 50px;
+  }
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+    background-color: #ffdddd;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+    display: none;
+  }
+  
+  /* Make circles that indicate the steps of the form: */
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none; 
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  
+  /* Mark the active step: */
+  .step.active {
+    opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: #4CAF50;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-family: Raleway;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  /* #prevBtn {
+    background-color: #333;
+    color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+  } */
+
+  #nextBtn {
+    background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+    color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+    width: 200px;
+  }
+
+  #bt {
+      text-align: center;
+  }

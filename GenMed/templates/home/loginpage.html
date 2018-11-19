@@ -1,0 +1,25 @@
+{% extends 'home/homeheader.html' %}
+
+{% load static %}
+{% block head2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home/loginpage.css' %}">
+{% endblock %}
+
+{% block body2 %}
+    <section id="login-section">
+            <div class="col-lg-4 col-md-6" id="login-box">
+                <div class="fields"> 
+                        <h1>Login</h1>
+                </div>
+                {% if error%}
+                    <p>Username/Password is incorrect</p>
+                {% endif %}
+                <form action={% url 'home:logIn' %} method="POST" id="login-form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Username" class="login-input" name="username"/>
+                    <input type="password" placeholder="Password" class="login-input" name="password"/>
+                    <input type="submit" value="Login" class="login-button" />
+                </form>
+            </div>
+    </section>
+{% endblock %}
