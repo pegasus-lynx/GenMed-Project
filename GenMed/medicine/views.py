@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from GenMed.mysql import *
 import MySQLdb
-
-def connect():
-    return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
 
 def home(request):
     context = {}
@@ -25,8 +23,6 @@ def query_medinfo(request):
                 (med,)
         )
         med_id = c.fetchone()
-
-        # print(med_id)
         if med_id  is None:
             context = { "get_query":get_query }
         else:
@@ -44,11 +40,41 @@ def query_medinfo(request):
             )
             common_name = list(c.fetchall())
             context = { 'get_query':get_query, 'gen_name':gen_name[0], 'common_name':common_name, }
+    elif request.method == 'POST':
+        q = request.POST.dict()
+        med_id = get_medid(request,c,q['gen_name'])
 
+        c.execute(
+            """ insert into com_name(med_id,company_name,custom_name) 
+                values(%s,%s,%s)""" ,
+                (med_id,q['company_name'],q['custom_name'])
+        )
+           
+        db.commit()
+        c.execute(
+            """ select custom_name, company_name from com_name
+                where med_id = %s """,
+                (med_id,)
+        )
+        common_name = list(c.fetchall()) 
+        context = { 'get_query':1, 'gen_name':q['gen_name'], 'common_name':common_name, }
+        return render(request, 'medicine/info.html', context)
     else:
         context = { 'get_query':False, }
 
     return render(request, 'medicine/info.html', context)
+
+def info(request,med_name):
+    db=connect()
+    c=db.cursor()
+    
+    med_id = get_medid(request,c,med_name)
+
+    if med_id is None:
+        pass
+    else:
+        pass
+
 
 def query_medavail(request):
     db=connect()

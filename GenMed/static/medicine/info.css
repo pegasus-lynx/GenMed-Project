@@ -21,6 +21,7 @@ table {
     border : none;
     border-radius: 15px;
     box-shadow: 0px 0px 15px rgba(110,110,110,0.3);
+    margin-bottom: 30px;
 }
 
 .col-lg-10 {
@@ -51,4 +52,36 @@ tr {
 
 tr:nth-child(even){
     background: #ffffff;
+}
+
+#subBtn , #addBtn, #cancelBtn{
+    background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+    color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+    width: 200px;
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    border-radius: 50px;
+  }
+
+#addrow, #add {
+    visibility: collapse;
+}
+
+#addBtn {
+    visibility: visible;
+    margin-left: 10%;
+}
+
+#subBtn {
+    visibility: hidden;
+    margin-left: 10%;
+}
+
+#cancelBtn {
+    visibility: hidden;
+    margin-left: 30px;
 }

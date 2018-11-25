@@ -1,4 +1,4 @@
-{% extends 'medicine/med_header.html' %}
+{% extends 'medicine/medheader.html' %}
 
 {% load static %}
 {% block head_2 %}
@@ -28,6 +28,21 @@
                     {% endfor %}
                 </table>
             </section>
+
+            <script type='text/javascript'>
+                function GetMap()
+                {
+                    var map = new Microsoft.Maps.Map('#myMap', {
+                        credentials: 'Your Bing Maps Key',
+                        center: new Microsoft.Maps.Location(51.50632, -0.12714),
+                        mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+                        zoom: 10
+                    });
+            
+                    //Add your post map load code here.
+                }
+            </script>
+
         {% else %}
             <section id="not_found">
                 <h1>Sorry</h1>
@@ -36,4 +51,5 @@
             </section>
         {% endif %}
     {% endif %}
+
 {% endblock %}
