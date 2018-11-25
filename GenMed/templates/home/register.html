@@ -13,26 +13,13 @@
         <hr>
         <form id="regForm" action={% url 'home:register' %} method="POST">
             {% csrf_token %}
-            <div class="tab"> <h3 class='tab-head'>User Profile</h3>  
               <p><input placeholder="Username..."  name="username"></p>
               <p><input type="email" placeholder="E-mail..."  name="email"></p>
               <p><input type="password" placeholder="Password..."  name="password" id='password'></p>
-              <p><input type="password" placeholder="Confirm Password..."  name="cnf_password" id='cnf_password'>
-                <span id="#message" style='visibility: hidden'>Passwords don't match</span></p>
-            </div>
-            <p id='bt'><input type="submit" value='Register' name='register' id='nextBtn'></p>
+              <p><input type="password" placeholder="Confirm Password..."  name="cnf_password" id='cnf_password'></p>
+              <p><span id="#err">{{ err }}</span></p>
+              <p id='bt'><input type="submit" value='Register' name='register' id='subBtn'></p>
           </form>
     </section>
     </div>
-          
-          <script src="{% static 'home/signup-page.js' %}"></script>
-          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-          <script>
-            $('#password, #cnf_password').on(keyup, function() {
-              if ($('#password').val() != $('#cnf_password').val()){
-                $('#message').attr({visibilty:visible})
-              }
-            });
-          </script>
-
 {% endblock %}

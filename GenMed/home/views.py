@@ -1,94 +1,130 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.urls import reverse
 import MySQLdb
 
-def connect():
-    return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
+#this file includes function for sql queries used by multiple views.
+from GenMed.mysql import *
 
-# Create your views here.
+def is_valid_email(email):
+    return True
 
 def home(request):
     context = {}
-    return render(request, 'home/homepage.html', context)
+    return render(request, 'home/home.html', context)
 
 def logIn(request):
     db=connect()
     c=db.cursor()
     if request.method=='POST':
-        # print("--"*100)
-        # print(request.POST.dict())
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request,user)
-            print(str(user))
+            print('1.',str(user))
             return redirect(reverse('shop:dashboard'))
-        else:
+        else:    
             context = { 'error':True }
-            return render(request, 'home/login-page.html', context)
+            return render(request, 'home/loginpage.html', context)
     else:
+        get_userlist(request,c)
         context = { 'error':False }
-        return render(request, 'home/login-page.html', context)
+        return render(request, 'home/loginpage.html', context)
+
+def logOut(request):
+    try:
+        logout(request)
+    except ValueError:
+        pass
+    return redirect(reverse('home:home'))
 
 def register(request):
+    db=connection
+    c=db.cursor()
+    userlist = get_userlist(request,c)
     if request.method=='POST':
-        print("POST")
-        db=connect()
-        c=db.cursor()
+        q = request.POST.dict()
+        print(q)
+        if q['password'] != q['cnf_password']:
+            err = "Passwords don't match"
+            return render(request, 'home/register.html', context= { 'err': err })
+        elif not is_valid_email(q['email']):
+            err = "Invalid email"
+            return render(request, 'home/register.html', context= { 'err': err })
+        elif q['username'] in userlist:
+            err = "Username already taken"
+            return render(request, 'home/register.html', context= { 'err': err })
+        else:
+            c.execute(
+                """ INSERT into shop(username,email,passwd) 
+                    values (%s,%s,%s) """,
+                    (q['username'],q['email'],q['password'])
+            )
+            db.commit()
+            p = User(username=q['username'],password=q['password'])
+            p.save()
+            login(request,p)
+            return render(request, 'home/createshop.html', context = {})
+    else:
+        context = { 'userlist':userlist }
+        return render(request, 'home/register.html', context)
 
-        # extract field information
-        data = request.POST.dict()
+@login_required
+def createshop(request):
+    db=connect()
+    c=db.cursor()
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            q = request.POST.dict()
+            shop_id = get_max_shopid(request,c)+1
+            user_id = get_userid_by_name(request,c)
+            print(q)
+            c.execute(
+                """ INSERT into shop_info(shop_id,name,owner_name,
+                    mob_no,alt_no,license,user_id) values(%s,%s,%s,%s,%s,%s,%s) """,
+                    (shop_id,q['shop_name'],q['owner_name'],
+                        q['mob_no'],q['alt_no'],q['license'],user_id)
+            )
+            #db.commit()
+            
+            c.execute(
+                """ INSERT into ph_detail(name,deg,college)
+                    values(%s,%s,%s) """,
+                    (q['ph_name'],q['ph_deg'],q['ph_college'])
+            )
+            #db.commit()
 
-        c.execute(
-            """ INSERT into shop(username,email,password) 
-                values (%s,%s,%s) """,
-                (data['username'],data['email'],data['password'])
-        )
+            c.execute(
+                """ SELECT ph_id
+                    from ph_detail
+                    where name = %s and deg = %s and college = %s """,
+                    (q['ph_name'],q['ph_deg'],q['ph_college'])
+            )
+            
+            ph_id=str(c.fetchone()[0])
+            
+            c.execute(
+                """ INSERT into shop_license(shop_id,ph_id,license,dr_license_type,dr_license_no)
+                    values(%s,%s,%s,%s,%s) """,
+                    (shop_id,ph_id,q['license'],q['drug_license_type'],q['drug_license'])
+            )
+            #db.commit()
 
-        c.execute(
-            """ SELECT shop_id 
-                from shop
-                where username=%s and email=%s """ ,
-                (data['username'],data['email'])
-        )
-        
-        data['shop_id']=str(c.fetchall())
-
-        c.execute(
-            """ INSERT into shop_info(shop_id,name,owner_name,
-                mob_no,alt_no,license) values(%s,%s,%s,%s,%s,%s) """,
-                (data['shop_id'],data['name'],data['owner_name'],
-                data['mob_no'],data['alt_no'],data['license'])
-        )
-        
-        c.execute(
-            """ INSERT into ph_detail(name,deg,college)
-                values(%s,%s,%s) """,
-                (data['ph_name'],data['ph_deg'],data['ph_college'])
-        )
-
-        c.execute(
-            """ SELECT ph_id
-                from ph_detail
-                where shop_id=%s """,
-                (data['shop_id'])
-        )
-        
-        data['ph_id']=str(c.fetchall())
-        
-        c.execute(
-            """ INSERT into shop_loc(shop_id,lat,lon,
-            state,district,city) values(%s,%s,%s,%s,%s,%s) """,
-            (data['shop_id'],data['lat'],data['lon'],
-            data['state'],data['district'],data['city'])
-        )
-        print(request.POST.dict())
-        #return HttpResponse(request.POST.dict())
-        return redirect(reverse('shop:update-stock'))
+            c.execute(
+                """ INSERT into shop_loc(shop_id,lat,lon,
+                    state,district,city) values(%s,%s,%s,%s,%s,%s) """,
+                    (shop_id,q['lat'],q['lon'],
+                     q['state'],q['district'],q['city'])
+            )
+            #db.commit()
+            return redirect(reverse('shop:update_stock'))
+        else:
+            context = {}
+            return render(request, 'home/createshop.html', context)
     else:
         context = {}
-        return render(request, 'home/signup-page.html', context)
-
+        return render(request, 'home/createshop.html', context)

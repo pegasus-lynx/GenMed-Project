@@ -13,59 +13,35 @@
         <hr>
         <form id="regForm" action={% url 'home:create_shop' %} method="POST">
             {% csrf_token %}
-            <div class="tab"> <h3 class='tab-head'>Shop Info</h3> 
-              <p><input placeholder="Shop Name..." oninput="this.className = ''" name="shop_name"></p>
-              <p><input placeholder="Owner Name..." oninput="this.className = ''" name="owner_name"></p>
-              <p><input placeholder="Mob No..." oninput="this.className = ''" name="mob_no"></p>
-              <p><input placeholder="Alt No..." oninput="this.className = ''" name="alt_no"></p>
+            <div class='parts'> <h3 class='tab-head'>Shop Info</h3> 
+              <p><input class='inp' placeholder="Shop Name..."  name="shop_name"></p>
+              <p><input class='inp' placeholder="Owner Name..."  name="owner_name"></p>
+              <p><input class='inp' placeholder="Mob No..."  name="mob_no"></p>
+              <p><input class='inp' placeholder="Alt No..."  name="alt_no"></p>
             </div>
-            <div class="tab"> <h3 class='tab-head'>License Detail</h3> 
-              <p><input placeholder="License..." oninput="this.className = ''" name="license"></p>
-              <p><input placeholder="Drug License..." oninput="this.className = ''" name="drug_license"></p>
-              <p><input placeholder="Drug License Type..." oninput="this.className = ''" name="drug_license_type"></p>
+            <div class="parts"> <h3 class='tab-head'>License Detail</h3> 
+              <p><input class='inp' placeholder="License..."  name="license"></p>
+              <p><input class='inp' placeholder="Drug License..."  name="drug_license"></p>
+              <p><input class='inp' placeholder="Drug License Type..."  name="drug_license_type"></p>
             </div>
-            <div class="tab"> <h3 class='tab-head'>Pharmacist Detail</h3> 
-              <p><input placeholder="Name..." oninput="this.className = ''" name="ph_name"></p>
-              <p><input placeholder="Degree..." oninput="this.className = ''" name="ph_deg"></p>
-              <p><input placeholder="College..." oninput="this.className = ''" name="ph_college"></p>
+            <div class="parts"> <h3 class='tab-head'>Pharmacist Detail</h3> 
+              <p><input class='inp' placeholder="Name..."  name="ph_name"></p>
+              <p><input class='inp' placeholder="Degree..."  name="ph_deg"></p>
+              <p><input class='inp' placeholder="College..."  name="ph_college"></p>
             </div>
-            <div class="tab"> <h3 class='tab-head'>Address</h3>
-                <p><input placeholder="City..." oninput="this.className = ''" name="city"></p>
-                <p><input placeholder="District..." oninput="this.className = ''" name="district"></p>
-                <p><input placeholder="State..." oninput="this.className = ''" name="state"></p>
-                <input type="hidden" name="lat" id="lat">
-                <input type="hidden" name="lon" id="lon">
+            <div class="parts"> <h3 class='tab-head'>Address</h3>
+                <p><input class='inp' placeholder="City..."  name="city"></p>
+                <p><input class='inp' placeholder="District..."  name="district"></p>
+                <p><input class='inp' placeholder="State..."  name="state"></p>
+                <p><input type="text" name="lat" id="lat" placeholder="Latitude...">
+                   <input type="text" name="lon" id="lon" placeholder="Longitude...">
+                   <input type="button" class='inp' id='locBtn' onclick=getLocation() value='Fetch Location'></p>
             </div>
-            <div style="overflow:auto;">
-              <div style="float:right;">
-                <p id='btn-para'>
-                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                </p>
-              </div>
-            </div>
-            <!-- Circles which indicates the steps of the form: -->
-            <div style="text-align:center;margin-top:40px;">
-              <span class="step"></span>
-              <span class="step"></span>
-              <span class="step"></span>
-              <span class="step"></span>
-            </div>
+            <p id='bt'><input class='inp' type="submit" value="Submit" name='submit_btn' id="subBtn"></p>
           </form>
     </section>
     </div>
           
-          <script src="{% static 'home/signup-page.js' %}"></script>
+          <script src="{% static 'home/createshop.js' %}"></script>
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-          <script>
-            $('input').blur(function(event) {
-                event.target.checkValidity();
-            }).bind('invalid', function(event) {
-                $(event.target).addClass("invalid");
-                // $(event.target).focus();//}, 50);
-            }).bind('valid', function(event) {
-              $(event.target).removeClass("invalid");
-            });
-          </script>
-
 {% endblock %}
