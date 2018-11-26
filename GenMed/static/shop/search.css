@@ -33,9 +33,9 @@
 }
 
 .rowhead {
-    width: 20%;
-    margin-right: 5%;
-    margin-left: 5%;
+    width: 30%;
+    margin-right: 15%;
+    margin-left: 10%;
 }
 
 .cards:nth-child(even){
@@ -84,23 +84,15 @@
     display: block;
     float: left;
     width: 30%;
+    margin-left:10%;
 }
 
 .col2 {
-    width: 10%;
-    margin-right: 3%;
+    width: 30%;
+    margin-right: 5%;
 }
 
-.col3 {
-    width: 10%;
-    margin-right: 3%;
-}
-
-.col4 {
-    width: 20%;
-}
-
-.col4, .col3, .col2 {
+.col2 {
     display: block;
     float: left;
     background: #204065;

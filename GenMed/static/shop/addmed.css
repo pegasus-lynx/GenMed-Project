@@ -51,13 +51,35 @@ input[type=text] , input[type=date]{
 }
 
 input[type=submit] {
-    border-radius: 50px;
-    padding: 5px 10px;
-    font-family: 'Fira Sans', sans-serif;
-    font-weight: bold;
-    width: 20%;
-    margin-left: 40%;
-    margin-top: 30px;
     background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
     color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+    width: 200px;
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    border-radius: 50px;
+    margin: 10px 20px;
+    font-weight: bold;
+}
+
+#upBtn {
+    background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+    color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+    width: 200px;
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    border-radius: 50px;
+    margin: 10px 20px;
+}
+
+#bPara {
+    margin-top: 50px;
+    text-align:center;
 }

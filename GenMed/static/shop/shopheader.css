@@ -32,7 +32,7 @@ header .bg-image h1{
 }
 
 header .bg-image h3{
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Dancing Script', cursive;
 	margin-bottom: 30px;
 }
 
@@ -46,7 +46,8 @@ header .bg-image h3{
     color: #333;
     padding: 10px 5px;
     padding-bottom: 0;
-    maargin-bottom: 50px;
+    margin-bottom: 50px;
+    text-align: center;
 }
 
 #inner-nav ul .nav-item > a{
@@ -74,4 +75,36 @@ header .bg-image h3{
     #inner-nav ul{
         width: 100%;
     }
+}
+
+#subBtn {
+    background: white;
+    width: 15%;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.inp {
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    display: inline;
+}
+
+#param {
+    width: 60%;
+}
+
+#tag {
+    width: 15%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    text-align: center;
+    color: white;
+}
+
+#form_div{
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

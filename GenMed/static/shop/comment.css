@@ -1,4 +1,4 @@
-#updateinfo-sec {
+#addmed-sec {
     padding-top: 50px;
 }
 
@@ -16,7 +16,7 @@ hr {
     font-family: 'Fira Sans', sans-serif;
 }
 
-#updateinfo-sec > form {
+#addmed-sec > form {
     width: 60%;
     margin-left: 20%;
     margin-top: 30px;
@@ -38,16 +38,28 @@ label {
     border-right: 0;
 }
 
-input[type=text] , input[type=date]{
+input[type=text]{
+    border: 1.5px solid #0c2646;
+    padding: 8px 10px;
+    width: 75%;
+    margin-bottom: 50px;
+    border-left: 1.5px solid #0c2646;
+    border-radius: 50px;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: bold;
+}
+
+input[type=textarea]{
     border: 1.5px solid #0c2646;
     padding: 8px 10px;
     width: 75%;
     margin-left: 0;
     border-left: 1.5px solid #0c2646;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border-radius: 50px;
+    width: 500px;
+    height: 300px;
     font-family: 'Fira Sans', sans-serif;
-    font-weight: bold;
+    font-weight: bold;    
 }
 
 input[type=submit] {
@@ -65,13 +77,6 @@ input[type=submit] {
     font-weight: bold;
 }
 
-#l-para {
-    font-family: 'Fira Sans', sans-serif;
-    font-weight: bold;
-    color: #686868;
-    padding: 5px 10px;
-}
-
 #upBtn {
     background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
     color: white;
@@ -87,5 +92,6 @@ input[type=submit] {
 }
 
 #bPara {
+    margin-top: 50px;
     text-align:center;
 }

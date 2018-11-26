@@ -1,0 +1,37 @@
+.para h1, .para p {
+	color: #676a6c;
+	font-family: 'Fira Sans', sans-serif;
+	margin-bottom: 30px;
+}
+
+.para h1 {
+	text-align: center;
+	font-size: 2.2rem;
+}
+
+.para p {
+	text-align: justify;
+	margin-bottom: 80px;
+}
+
+#home-sec {
+	margin-top: 200px;
+}
+
+.upBtn {
+    background: linear-gradient( 135deg, #0c2646 0%, #204065 60%, #2a5788 100%);
+    color: white;
+    font-family: 'Fira Sans', sans-serif;
+    border-radius: 50px;
+    width: 200px;
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Fira Sans', sans-serif;
+    border: 1px solid #aaaaaa;
+    border-radius: 50px;
+    margin: 10px 20px;
+}
+
+#bPara {
+    text-align:center;
+}

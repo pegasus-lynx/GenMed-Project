@@ -5,18 +5,17 @@ var lon = document.getElementById("lon");
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(storePosition);
+        navigator.geolocation.getCurrentPosition(storePosition, showError);
     } else { 
-        showErr()
+        $('#loc_err').attr('visibility','visible')
     }
 }
 
 function storePosition(position) {
-    $('#lat').setAttribute("value", position.coords.latitude);
-    $('#lon').setAttribute("value", position.coords.longitude);
+    $('#lat').attr("value", position.coords.latitude);
+    $('#lon').attr("value", position.coords.longitude);
 }
 
-function showErr() {
-    var v=$('#loc_err')
-    v.attr('visibility','visible')
+function showError(err) {
+    console.log(err) 
 }
