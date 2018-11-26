@@ -13,12 +13,12 @@
     <header>
         <div class="bg-image">
             <h1>Search the medicine here</h1>
-            <form action="{% url 'medicine:info' %}" method="get" autocomplete="off">
+            <form action="" method="get" autocomplete="off" id='search'>
                 <p><input type="text" name="med-name" id="text-box" placeholder="Search..." 
                     onfocus="this.removeAttribute('placeholder')" onblur="this.setAttribute('placeholder','Search...')"></p>
                 <p>
-                    <input type="submit" name="info" value="Get Info" class="search-button">
-                    <input type="submit" name="avail" value="Get Avail" class="search-button">
+                    <input type="submit" name="info" value="Get Info" class="search-button" onclick=getInfo()>
+                    <input type="submit" name="avail" value="Get Avail" class="search-button" onclick=getAvail()>
                 </p>
             </form>
         </div>
@@ -27,6 +27,19 @@
     <div class='container' id="main">    
         {% block body_2 %}
         {% endblock %}
+
+        <script>
+            function getInfo() {
+                $('#search').attr('action',"{% url 'medicine:info' %}")
+                $('#search').submit()
+            }
+
+            function getAvail() {
+                $('#search').attr('action',"{% url 'medicine:avail' %}")
+                $('#search').submit()
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>    
     </div>
     
 {% endblock %}

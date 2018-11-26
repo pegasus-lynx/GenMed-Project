@@ -1,0 +1,15 @@
+{% extends 'home/homeheader.html' %}
+
+{% load static %}
+{% block head2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home/sqlerror.css' %}">
+{% endblock %}
+
+{% block body2 %}
+    <section id="sqlerror">
+            <div class="col-lg-4 col-md-6 alert alert-danger" >
+                <p id ='#msg'>HeHe! Caught You. :P</p>
+                <a href={% url 'home:home' %}><button id='homeBtn'>Go Home!</button></a>
+            </div>
+    </section>
+{% endblock %}

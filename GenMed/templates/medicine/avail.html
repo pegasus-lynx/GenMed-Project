@@ -1,55 +1,60 @@
 {% extends 'medicine/medheader.html' %}
 
+{% load customtags %}
 {% load static %}
 {% block head_2 %}
     <link rel="stylesheet" type="text/css" href="{% static 'medicine/avail.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
 {% endblock %}
 
 {% block body_2 %}
-    {% if get_query %}
-        {%if med_id != None  %}
-            <section id="map">
-            </section>    
-            <section id="cards">
-                <table>
-                    <tr>
-                        <th>Sl.No.</th>
-                        <th>Shop</th>
-                        <th>Units</th>
-                        <th>Price</th>
-                    </tr>
-                    {% for shop in shops %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            {% for col in shop %}
-                                <td>{{ col }}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            </section>
+    <div class='container'>
+        {% if get_query %}
+            {%if med_id != None  %}
+                <section id="map">
+                </section>    
+                <section id="shop-sec">
+                    <ul id='list'>
+                        <li class='cards' id='head'>
+                            <span class='rowhead'>Shop Name</span>
+                            <span class='rowhead'>Price</span>
+                            <span class='rowhead'>Units</span>
+                            <span class='rowhead'>City</span>
+                        </li>
+                        {% for key,value in shops.items %}
+                            <li class='cards'>
+                                <span class='count'>{{ forloop.counter }}</span>
+                                {% for col in value %}
+                                    <span class='col{{ forloop.counter }}'>{{ col }}</span>
+                                {% endfor %}
+                                <span class='col4'>{{ loc|getcity:key }}</span>
+                                <span class='loca'><a href="{% url 'shop:profile' key %}"><i class="fa fa-map" aria-hidden="true"></i></a></span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
 
-            <script type='text/javascript'>
-                function GetMap()
-                {
-                    var map = new Microsoft.Maps.Map('#myMap', {
-                        credentials: 'Your Bing Maps Key',
-                        center: new Microsoft.Maps.Location(51.50632, -0.12714),
-                        mapTypeId: Microsoft.Maps.MapTypeId.aerial,
-                        zoom: 10
-                    });
-            
-                    //Add your post map load code here.
-                }
-            </script>
-
-        {% else %}
-            <section id="not_found">
-                <h1>Sorry</h1>
-                <hr>
-                <p>We could not find any matching results in our databases.</p>
-            </section>
+            {% else %}
+                <section id="not_found">
+                    <h1>Sorry</h1>
+                    <hr>
+                    <p>We could not find any matching results for {{ name }} in our databases.</p>
+                </section>
+            {% endif %}
         {% endif %}
-    {% endif %}
+    </div>
+    <script type='text/javascript'>
+        function GetMap()
+        {
+            var map = new Microsoft.Maps.Map('#myMap', {
+                credentials: 'Your Bing Maps Key',
+                center: new Microsoft.Maps.Location(51.50632, -0.12714),
+                mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+                zoom: 10
+            });
+    
+            //Add your post map load code here.
+        }
+    </script>
 
 {% endblock %}
