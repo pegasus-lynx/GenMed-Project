@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'home.middleware.SQLInjectionMiddleware',
 ]
 
 ROOT_URLCONF = 'GenMed.urls'
@@ -129,7 +128,7 @@ STATICFILES_DIRS =[
     os.path.join(BASE_DIR,'static'),
 ] 
 
-LOGIN_URL = '/home/login/'
+LOGIN_URL = '/home/logIn/?next=/shop/dashboard/'
 
 
 
