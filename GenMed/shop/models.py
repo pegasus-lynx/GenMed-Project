@@ -1,9 +1,8 @@
-# from django.db import models
-# from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-# class MyUser(AbstractUser):
-#     username = models.CharField(max_length=12, blank=True, null=False, unique=True)
-#     email = models.EmailField(max_length=254, blank=False, null=False)
-#     password = models.CharField(max_length=64, blank=False, null=False)
-#     first_name = models.CharField(max_length=30, blank=False, null=False)
-#     last_name = models.CharField(max_length=30, blank=True, null=True)
+
+class Comment(models.Model):
+    comment_no = models.AutoField(primary_key = True)
+    title = models.CharField(max_length=100)
+    shop_id = models.IntegerField(default = 0)
+    text = models.CharField(max_length = 500)

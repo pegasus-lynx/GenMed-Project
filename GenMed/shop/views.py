@@ -3,131 +3,21 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from .models import Comment
+from GenMed.mysql import *
 import MySQLdb
 
-#done
-def shopheader(request):
-    return render(request, 'shop/shop_header.html', context = {})
+# Displays the homepage in the shop
+def home(request):
+    return render(request, 'shop/home.html', context = {})
 
-def connect():
-    return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
-
-def get_medid(request,c,gen_name):
-    c.execute(
-        """ select med_id from med_info
-            where lower(gen_name) = %s """,
-            (gen_name.lower(),)
-    )
-
-    return c.fetchone()[0]
-
-def get_shopid(request,c):
-    username = request.user.username
-    print('-'*100)
-    print(username)
-    c.execute(
-        """ select shop_id from shop
-            where username = %s """ ,
-            (username,)
-    )
-    return c.fetchone()
-
-def get_userinfo(request,c,shop_id):
-    c.execute(
-        """ select username,first_name,last_name,email
-            from shop where shop_id = %s """,
-            (shop_id,)
-    )
-    keys = [ 'username','first_name','last_name','email']
-    res = c.fetchone()
-    
-    # user_info = {}
-    # for i in range(len(keys)):
-    #     user_info[keys[i]]=res[i]
-
-    user_info = []
-    for i in range(len(keys)):
-        user_info[i] = tuple(keys[i],res[i])
-
-    print(user_info)
-    return user_info
-
-def get_license(request,c,shop_id):
-    c.execute(
-        """ select SL.license,SL.dr_license_no,PD.ph_id,PD.name,PD.deg,PD.college
-            from shop_license as SL inner join ph_detail as PD on 
-            PD.ph_id = SL.ph_id
-            where SL.shop_id = %s """,
-            (shop_id,)
-    )
-    keys = [ "license", "drug_license", "ph_id","ph_name","deg","college"]
-    res = c.fetchone()
-    shop_license = []
-    # for i in range(len(keys)):
-    #     shop_license[keys[i]]=res[i]
-    for i in range(len(keys)):
-        shop_license.append([keys[i],res[i]])
-    return shop_license
-
-def get_curstock(request,c,shop_id):
-    c.execute(
-        """ select med_info.med_id,med_info.gen_name,avail.units,avail.price,avail.batch,avail.mfg_date,avail.exp_date
-            from med_info,avail
-            where avail.shop_id = %s and med_info.med_id=avail.med_id""",
-            (shop_id,)
-    )
-
-    # keys = ['med_id', 'gen_name', 'units', 'price', 'mfg_date', 'exp_date', 'batch']
-    res = map(list,c.fetchall())
-
-    cur_stock = {}
-    for i in res:
-        cur_stock[i[0]]=i[1:]
-
-    print(cur_stock)
-    return cur_stock
-
-def get_shopinfo(request,c,shop_id):
-    c.execute(
-        """ select name,owner_name,mob_no,alt_no 
-            from shop_info where shop_id = %s""",
-            (shop_id,)
-    )
-
-    keys = ["shop_name","owner_name","mob_no","alt_no"]
-    res = c.fetchone();
-
-    # shop_info = {}
-    # for i in range(len(keys)):
-    #     shop_info[keys[i]]=res[i]
-
-    shop_info = []
-    for i in range(len(keys)):
-        shop_info.append([keys[i],res[i]])
-
-    return shop_info
-
-def get_shoploc(request,c,shop_id):
-    c.execute(
-        """ select city,district,state
-            from shop_loc where shop_id = %s """,
-            (shop_id,)
-    )
-    keys = ["city","district","state"]
-    res = c.fetchone();
-
-    shop_loc = []
-    for i in range(len(keys)):
-        shop_loc.append([keys[i],res[i]])
-
-    return shop_loc
-#dashboard done
+# Displays the dashboard to the shop_owners from where they can access any records
 def dashboard(request):   
     if request.user.is_authenticated:
         db=connect()
         c=db.cursor()
 
-        shop_id = get_shopid(request,c)[0]
+        shop_id = get_shopid(request,c)
         shop_info = get_shopinfo(request,c,shop_id)
         shop_loc = get_shoploc(request,c,shop_id)
 
@@ -139,40 +29,27 @@ def dashboard(request):
         return render(request, 'shop/dashboard.html', context)
     else:
         context = {}
-        return render(request, 'home/login-page.html', context)    
+        return render(request, 'home/loginpage.html', context)    
 
-#profile done
-def profile(request):
+# displays the profile page to the consumers including their owner, contact detail and address
+def profile(request,shop_id):
     db=connect()
     c=db.cursor()
-    if request.method=="GET":
-        get_query = 1
-        shop_name = request.GET.get('shop-name')
 
-        shop_id = get_shopid(request,c,shop_id)
+    shop_ids = get_shopid_list(c)
 
-        if shop_id is None:
-            context = { 'found':None, 'shop_name':shop_name , 'type':'shop'}
-            return render(request, 'home/notfound.html', context)
-        else:
-            
-            shop_info = get_shopinfo(request,c,shop_id)
-            shop_loc = get_shoploc(request,c,shop_id)
+    if shop_id in shop_ids:
+        shop_info = get_shopinfo(request,c,shop_id)
+        shop_loc = get_shoploc(request,c,shop_id)
+        shop_cord = get_shopcord(c,shop_id)
 
-            c.execute(
-                    """ select lat, lon from shop_loc
-                        where shop_id = %s """,
-                        (shop_id,)
-                )
-                
-            cord = q.fetchone()
-            context = { 'shop_info':shop_info, 'shop_loc':shop_loc, 'cord':cord}
+        context = { 'shop_info':shop_info, 'shop_loc':shop_loc, 'shop_cord':shop_cord}
+        return render(request, 'shop/profile.html', context)
     else:
-        get_query = 0
-        context = { 'get_query':get_query, }
-    return render(request, 'medicine/info.html', context)
+        context={}
+        return render(request, 'shop/profile.html', context)
 
-#template done for curstock       
+# Displays the information for the current stocks in the shop     
 @login_required
 def cur_stock(request):
     db=connect()
@@ -184,18 +61,18 @@ def cur_stock(request):
         
         shop_id = get_shopid(request,c)
         cur_stock = get_curstock(request,c,shop_id)
-        #preprocess the dates to paas as a string to the template
         print(cur_stock)
         context = { 'shop_id':shop_id, 'cur_stock':cur_stock }
         return render(request, 'shop/curstock.html', context)
 
     else:
         context = {}
-        return render(request, 'home/login-page.html', context)
+        return render(request, 'home/loginpage.html', context)
 
-#license done
+# Displays the license information of the shop
 @login_required
 def license(request):
+    print(request.injection)
     if request.user.is_authenticated:
         
         db=connect()
@@ -210,14 +87,15 @@ def license(request):
         return render(request, 'shop/license.html', context)
     else:
         context = {}
-        return render(request, 'home/login-page.html', context)
+        return render(request, 'home/loginpage.html', context)
 
-#update info template done      
+# View for updating the information of the the shop      
 @login_required
 def update_info(request):
     db=connect()
     c=db.cursor()
-
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         cur_shop_info = get_shopinfo(request,c,shop_id)
@@ -228,8 +106,8 @@ def update_info(request):
             update = False
             keys = ["shop_name","owner_name","mob_no","alt_no"]
 
-            for i in keys:
-                if cur_shop_info[i] != q[i]:
+            for i in range(len(keys)):
+                if cur_shop_info[i][1] != q[cur_shop_loc[i][0]]:
                     update = True
                     break
 
@@ -245,15 +123,15 @@ def update_info(request):
             update = False
             keys = ["city","district","state"]
 
-            for i in keys:
-                if cur_shop_loc[i] != q[i]:
+            for i in range(len(keys)):
+                if cur_shop_info[i][1] != q[cur_shop_loc[i][0]]:
                     update = True
                     break
 
             if update:
                 c.execute(
                     """ update shop_loc
-                        set street = %s, city = %s, district = %s,  state= %s
+                        set city = %s, district = %s,  state= %s
                         where shop_id = %s """,
                         (*[ q[i] for i in keys ],shop_id,) 
                 )
@@ -272,11 +150,14 @@ def update_info(request):
         context = {}
         return render(request, 'home/login-page.html', context)
 
-#update_license template done
+# View used for upddating the license information
+# of the shop data.
 @login_required
 def update_license(request):
     db=connect()
     c=db.cursor()
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         cur_shop_license = get_license(request,c,shop_id)
@@ -320,8 +201,11 @@ def update_license(request):
             context = {'shop_id':shop_id , 'shop_license':cur_shop_license }
             return render(request, 'shop/updatelicense.html', context)
 
+# Main page for updating the stock page of the shop
 @login_required
 def update_stock(request):
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated:
@@ -344,10 +228,14 @@ def update_stock(request):
         context = {}
         return render(request, 'home/login-page.html', context)
 
+# View for updating the stock details like the price, units ,
+# mfg_date and exp_date of the medicine in stock of the shop.
 @login_required
 def update_med(request):
     db=connect()
     c=db.cursor()
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     med_id = request.GET.get('med_id')
 
     if request.user.is_authenticated:
@@ -393,10 +281,13 @@ def update_med(request):
         context = {}
         return render(request, 'home/login-page.html', context)
 
+# View for adding a generic medicine to the database 
 @login_required
 def add_med(request):
     db=connect()
     c=db.cursor()
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         keys = [ 'gen_name', 'units', 'price', 'batch', 'mfg_date','exp_date']
@@ -427,10 +318,13 @@ def add_med(request):
         context = {}
         return render(request, 'home/login-page.html', context)
 
+# View for updating the coordinates of the shop
 @login_required
 def update_cord(request):
     db=connect()
     c=db.cursor()
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated():
         if request.method == 'POST':
             q = request.POST.dict()
@@ -452,3 +346,48 @@ def update_cord(request):
     else:
         context = {}
         return render(request, 'home/login-page.html', context)
+
+# View for getting the shops by city or name
+def search(request):
+    db=connect()
+    c=db.cursor()
+    if request.injection:
+        return redirect(reverse('home:sqlerror'))
+    if request.method == 'GET':
+        param = request.GET.get('param')
+        tag = request.GET.get('tag')
+        if 'name' in tag.lower():
+            shop_list = get_shopname_list(c)
+            shops = {}
+            for shop in shop_list:
+                if param in shop:
+                    shop_id = get_shopid_by_name(c,param)
+                    if shop_id is not None:
+                        res = get_shop_search(c,shop_id)
+                        shops[shop_id]=res
+        else:
+            shops = get_shop_by_city(c,param)
+        
+        context = {'get_query':True, 'shops':shops }
+        return render(request, 'shop/search.html', context)
+    else:
+        context = {'get_query': False}
+        return render(request, 'shop/search.html', context)
+
+# View for getting the feed related to the shop comment        
+def feeds(request,comment_no):
+    mycomment = Comment.objects.get(comment_no = comment_no)
+    text = '<p><h1>Title : %s </h1></p>' % ( mycomment.title,)
+    text += '<p><h3>Comment No. : %s </h3></p>' % ( mycomment.comment_no, )
+    text += '<p><h3>Shop Name : %s</h3></p>' % (mycomment.shop_id, )
+    text += '<p> Comment : <br> %s </p>' % ( mycomment.text, )
+    return HttpResponse(text)
+
+def comment(request):
+    if request.method == 'POST':
+        q = request.POST.dict()
+        com = Comment(title=q['title'],shop_id=q['shop_id'],text=q['comment'])
+        com.save()
+        return redirect(reverse('shop:home'))       
+    else:
+        return render(request, 'shop/comment.html', context={})
