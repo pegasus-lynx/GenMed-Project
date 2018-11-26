@@ -1,0 +1,27 @@
+{% extends 'shop/shopheader.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/comment.css' %}">
+{% endblock %}
+
+<!-- context = { 'shop_id':shop_id, 'shop_info':cur_shop_info, 'shop_loc':cur_shop_loc } -->
+
+{% block body_2 %}
+    <section id='addmed-sec'>
+        <h1 class='sec-head'>Medicine Details</h1>
+        <hr>
+        <form action={% url 'shop:comment' %} method="post">
+            {% csrf_token %}
+                <input type="text" name="title" placeholder='Title...'>
+                <input type="text" name="shop_id" placeholder='Shop Id...'>
+                <input type="textarea" name="comment" placeholder='Comment...'>
+            <p id='bPara'>
+                <input type="submit" value="Submit" name='submit'>
+                <a href={% url 'shop:home '}> <button id='upBtn'>Cancel</button> </a>
+            </p>
+        </form>
+
+    </section>
+{% endblock %}

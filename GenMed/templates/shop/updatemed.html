@@ -1,4 +1,4 @@
-{% extends 'shop/shop_header.html' %}
+{% extends 'shop/shopheader.html' %}
 
 {% load static %}
 
@@ -31,7 +31,9 @@
                     <input type="date" name="{{row.0}}" id="{{row.0}}"" value="{{row.1}}">
                 </p>
             {% endfor %}
-            <input type="submit" value="Update" name='update_button'>
+            <p id='bPara'>
+                <input type="submit" value="Update" name='update_button'>
+            </p>
         </form>
 
     </section>

@@ -1,0 +1,40 @@
+{% extends 'shop/shopheader.html' %}
+
+{% load customtags %}
+{% load static %}
+
+{% block head_2 %}
+    <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/search.css' %}">
+{% endblock %}
+
+{% block body_2 %}
+<div class='container'>
+        {% if get_query %}  
+            <section id="shop-sec">
+                <ul id='list'>
+                    <li class='cards' id='head'>
+                        <span class='rowhead'>Shop Name</span>
+                        <span class='rowhead'>City</span>
+                    </li>
+                    {% for key,value in shops.items %}
+                        <li class='cards'>
+                            <span class='count'>{{ forloop.counter }}</span>
+                            {% for col in value %}
+                                <span class='col{{ forloop.counter }}'>{{ col }}</span>
+                            {% endfor %}
+                            <span class='loca'><a href="{% url 'shop:profile' key %}"><i class="fa fa-map" aria-hidden="true"></i></a></span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+        {% else %}
+            <section id="not_found">
+                <h1>Sorry</h1>
+                <hr>
+                <p>We could not find any matching results for {{ name }} in our databases.</p>
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

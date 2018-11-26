@@ -1,0 +1,50 @@
+{% extends 'baseheader.html' %}
+
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/shopheader.css' %}">
+
+    {% block head_2 %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block body %}
+    <header class="shop-header">
+        <div class="bg-image">
+            <h1>GenMed-Project</h1>
+            <h3>Search nearby shop here by city or name</h3>
+            <div class='container'>
+                <div id='form_div'>
+                    <form action="{% url 'shop:search' %}" method="get">
+                            <p>
+                            <input type="text" class='inp' name="tag" list='tags' id="tag" placeholder='Tag...' style='color:black'>
+                            <datalist id='tags'>
+                                <option value="By Name">Searches by ths shop name</option>
+                                <option value="By City">Searches by the city name</option>
+                            </datalist>
+                            <input type="text" name="param" id="param" class=inp placeholder='Search...' >
+                            <input type="submit" value="Search" class='inp' id='subBtn'></p>
+                            <p>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class='container' id="main">
+        {% if user.is_authenticated %}
+            <nav class="navbar navbar-expand-md navbar-expand-sm navbar-expand-xs sticky-top" id='inner-nav'>
+                    <!--Links-->
+                        <ul class="navbar-nav navbar-left">
+                            <li class="nav-item col-sm-4 col-xs-4"><a href={% url 'shop:home' %} class="nav-link">Home</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href={% url 'shop:dashboard' %} class="nav-link">Dashboard</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href={% url 'shop:license' %} class="nav-link">License</a></li>
+                            <li class="nav-item col-sm-4 col-xs-4"><a href={% url 'shop:cur_stock' %} class="nav-link">Stocks</a></li>
+                        </ul>
+            </nav>
+        {% endif %}
+            {% block body_2 %}
+            {% endblock %}
+    </div>
+{% endblock %}

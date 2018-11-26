@@ -1,4 +1,4 @@
-{% extends 'shop/shop_header.html' %}
+{% extends 'shop/shopheader.html' %}
 
 {% load customtags %}
 {% load static %}
@@ -15,36 +15,48 @@
     <section id='stock-sec'>
         <h1 class='sec-head'>Update Stock</h1>
         <hr>
-        <form method="post" id='main-form'>
-            {% csrf_token %}
-            <table>
+        <table>
+            <tr>
+                <th class='col1'>Gen Name</th>
+                <th class='col2'>Units</th>
+                <th class='col3'>Price/Unit</th>
+                <th class='col4'>Batch</th>
+                <th class='col5'>Mfg. Date</th>
+                <th class='col6'>Exp. Date</th>
+                <th class='col7' id='last-th'>Edit</th>
+            </tr>
+            {% for key in med_ids %}
                 <tr>
-                    <th class='col1'>Gen Name</th>
-                    <th class='col2'>Units</th>
-                    <th class='col3'>Price/Unit</th>
-                    <th class='col4'>Batch</th>
-                    <th class='col5'>Mfg. Date</th>
-                    <th class='col6'>Exp. Date</th>
-                    <th class='col7' id='last-th'>Edit</th>
+                    {% for cell in cur_stock|get:key %}
+                        <td class="col{{ forloop.counter }}">{{ cell }}</td>
+                    {% endfor %}
+                    <form action={% url 'shop:update_med' %} method="get">
+                        {% csrf_token %}
+                    <input type="hidden" name="med_id" class='get-btn' value="{{ key }}">
+                    <td class='col7'> <input type="submit" value="Edit" name="updatemed_btn" /></td>
+                    </form>
                 </tr>
-                {% for key in med_ids %}
-                    <tr>
-                        {% for cell in cur_stock|get:key %}
-                            <td class="col{{ forloop.counter }}">{{ cell }}</td>
-                        {% endfor %}
-                        <form action={% url 'shop:update_med' %} method="get">
-                            {% csrf_token %}
-                        <input type="hidden" name="med_id" class='get-btn' value="{{ key }}">
-                        <td class='col7'> <input type="submit" value="Edit" name="updatemed_btn" /></td>
-                        </form>
-                    </tr>
-                {% endfor %}
-            </table>
-            <p>
-            <input type="submit" class='main-btn' value='Update' name='submit'/>
-            <input type="submit" class='main-btn' value='Add Field' name='submit'/>
+            {% endfor %}
+        </table>
+        <form method="post" id='main-form' action="">
+                {% csrf_token %}
+            <p id='pBara'>
+                <input type="submit" class='upBtn' value='Update' name='submit' onclick=toUpmed()/>
+                <input type="submit" class='upBtn' value='Add Field' name='submit' onclick=toAddmed() />
             </p>
         </form>
     </section>
+
+    <script>
+            function toUpmed() {
+                $('#main-form').attr('action',"{% url 'shop:cur_stock' %}")
+                $('#main-form').submit()
+            }
+
+            function toAddmed() {
+                $('#main-form').attr('action',"{% url 'shop:add_med' %}")
+                $('#main-form').submit()
+            }
+    </script>
 {% endblock %}
 

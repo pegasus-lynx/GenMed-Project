@@ -1,4 +1,4 @@
-{% extends 'shop/shop_header.html' %}
+{% extends 'shop/shopheader.html' %}
 
 {% load static %}
 
@@ -40,5 +40,6 @@
             </tr>
             {% endfor %}
         </table>
+        <p id='bPara'><a href={% url 'shop:update_license' %}><button id='upBtn'>Update</button></a></p>
     </section>
 {% endblock %}

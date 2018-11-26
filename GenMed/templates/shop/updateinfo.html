@@ -1,4 +1,4 @@
-{% extends 'shop/shop_header.html' %}
+{% extends 'shop/shopheader.html' %}
 
 {% load static %}
 
@@ -35,7 +35,10 @@
                 </p>
             {% endfor %}
             <p id='l-para'>Do you want to update the coordinates of your shop ? &nbsp;&nbsp; <input type="checkbox" name="change_cord"></p>
-            <input type="submit" value="Update" name='update_button'>
+            <p id='bPara'>
+                <input type="submit" value="Update" name='update_button'>
+                <a href={% url 'shop:dashboard' %}><button id='upBtn'>Cancel</button></a>
+            </p>
         </form>
 
     </section>

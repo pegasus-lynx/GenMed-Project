@@ -1,0 +1,42 @@
+{% extends 'shop/shopheader.html' %}
+
+{% load static %}
+
+{% block head_2 %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/home.css' %}">
+{% endblock %}
+
+{% block body_2 %}
+    <section id='home_sec'>
+            <div class="para">
+                    <h1>Why are drug stores imporatant?</h1>
+                    <p>Small commercial drug shops and pharmacies are often the first line of health 
+                       care in poor countries, especially in rural areas that have very few private 
+                       or public clinics. Drug shops and pharmacies, with their convenience, anonymity, 
+                       and cost-savings (compared to private physicians), are an important source of 
+                       health services, products, and information that is particularly important in 
+                       the context of high maternal mortality and morbidity, critical health-worker 
+                       shortages, poorly stocked clinics, and high unmet need for family planning </p>
+                </div>
+        
+                <div class='para'>
+                    <h1>Where are generic medicine stores?</h1>
+                    <p> Generic medicine stores atr those drug stroes or pharmacies which are prescribed
+                        to sell generic medicines.
+                        A generic drug is a medication created to be the same as an already 
+                        marketed brand-name drug in dosage form, safety, strength, route of 
+                        administration, quality, performance characteristics, and intended use.
+                    <br><br>
+                        Due to low awareness of generic medicine in our society, these types of medicine 
+                        stores are scarce.However with the effort of the government more and more such shops 
+                        are being in different parts of country, specially in rural and impoverished areas
+                        in order to provide better healthcare services in these areas. 
+                    </p>
+                </div>
+            <div id='bPara'>
+                <a href={% url 'shop:shopcomments' %}> <button class='upBtn'> Show Comments </button> </a>
+                <a href={% url 'shop:comment' %}> <button class='upBtn'> Add Comments </button> </a>
+            </div>
+    </section>
+{% endblock %}
+
