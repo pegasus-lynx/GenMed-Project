@@ -2,7 +2,7 @@ import MySQLdb
 from django.db import connection
 
 def connect():
-    return MySQLdb.connect(user="root",passwd="DKumar@14",db="GEN_MED")
+    return MySQLdb.connect(user="django",passwd="djUser@123",db="GEN_MED")
 
 def get_userlist(request,c):
     c.execute(
@@ -36,6 +36,25 @@ def get_shopid(request,c):
     shop_id = c.fetchone()
     print(shop_id)
     return shop_id
+
+def get_shop_by_city(c,city):
+    c.execute(
+        """ select shop_info.shop_id, shop_info.name, shop_loc.lat, shop_loc.lon, shop_loc.city 
+            from shop_info, shop_loc
+            where shop_info.shop_id = shop_loc.shop_id and city = %s """,
+            (city.lower(),)
+    )
+    shop_desc = c.fetchall()
+    shops = []
+    keys = ["shop_id", "name", "lat", "lon", "city"]
+    for shop in shop_desc:
+        temp = {}
+        for i in range(len(keys)):
+            temp[keys[i]] = shop[i]
+        shops.append(temp)
+    
+    print(shops)
+    return shops
 
 def get_userid(request,c,shop_id):
     c.execute(
@@ -122,7 +141,7 @@ def get_shopinfo(request,c,shop_id):
     )
 
     keys = ["shop_name","owner_name","mob_no","alt_no"]
-    res = c.fetchone();
+    res = c.fetchone()
 
     shop_info = []
     for i in range(len(keys)):

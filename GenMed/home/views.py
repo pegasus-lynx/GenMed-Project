@@ -22,8 +22,8 @@ def sqlerror(request):
 
 # View for logging in 
 def logIn(request):
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     db=connect()
     c=db.cursor()
     if request.method=='POST':
@@ -87,8 +87,8 @@ def register(request):
 def createshop(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         if request.method == 'POST':
             q = request.POST.dict()

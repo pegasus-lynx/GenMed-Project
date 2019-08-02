@@ -7,6 +7,18 @@ from .models import Comment
 from GenMed.mysql import *
 import MySQLdb
 
+def getCenter(shops):
+    center = { 'lat':0, 'lon':0 }
+    if len(shops)==0:
+        return center
+    for shop in shops:
+        center['lat'] += shop['lat']
+        center['lon'] += shop['lon']
+
+    center['lat'] /= len(shops)
+    center['lon'] /= len(shops)
+    return center
+
 # Displays the homepage in the shop
 def home(request):
     return render(request, 'shop/home.html', context = {})
@@ -72,7 +84,7 @@ def cur_stock(request):
 # Displays the license information of the shop
 @login_required
 def license(request):
-    print(request.injection)
+    # print(request.injection)
     if request.user.is_authenticated:
         
         db=connect()
@@ -94,8 +106,8 @@ def license(request):
 def update_info(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         cur_shop_info = get_shopinfo(request,c,shop_id)
@@ -156,8 +168,8 @@ def update_info(request):
 def update_license(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         cur_shop_license = get_license(request,c,shop_id)
@@ -204,8 +216,8 @@ def update_license(request):
 # Main page for updating the stock page of the shop
 @login_required
 def update_stock(request):
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     db=connect()
     c=db.cursor()
     if request.user.is_authenticated:
@@ -234,8 +246,8 @@ def update_stock(request):
 def update_med(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     med_id = request.GET.get('med_id')
 
     if request.user.is_authenticated:
@@ -286,8 +298,8 @@ def update_med(request):
 def add_med(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated:
         shop_id = get_shopid(request,c)
         keys = [ 'gen_name', 'units', 'price', 'batch', 'mfg_date','exp_date']
@@ -323,8 +335,8 @@ def add_med(request):
 def update_cord(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.user.is_authenticated():
         if request.method == 'POST':
             q = request.POST.dict()
@@ -347,12 +359,16 @@ def update_cord(request):
         context = {}
         return render(request, 'home/login-page.html', context)
 
+def map(request):
+    context = {}
+    return render(request, 'shop/map.html', context)
+
 # View for getting the shops by city or name
 def search(request):
     db=connect()
     c=db.cursor()
-    if request.injection:
-        return redirect(reverse('home:sqlerror'))
+    # if request.injection:
+    #     return redirect(reverse('home:sqlerror'))
     if request.method == 'GET':
         param = request.GET.get('param')
         tag = request.GET.get('tag')
@@ -368,7 +384,9 @@ def search(request):
         else:
             shops = get_shop_by_city(c,param)
         
-        context = {'get_query':True, 'shops':shops }
+
+        print(len(shops))
+        context = {'get_query':True, 'shops':shops, 'center':getCenter(shops) }
         return render(request, 'shop/search.html', context)
     else:
         context = {'get_query': False}

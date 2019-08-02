@@ -18,4 +18,5 @@ urlpatterns = [
     path('shopcomments/', ShopCommentFeed(), name='shopcomments'),
     path('feeds/<int:comment_no>/', views.feeds, name='feeds'),
     path('comment/', views.comment, name='comment'),
+    path('map/', views.map, name='map_test')
 ]

@@ -6,27 +6,79 @@
 {% block head_2 %}
     <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'shop/search.css' %}">
+    <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&branch=experimental&key=Amiv_M8RcosveHF8EoD9XVGo_x9gaN9KHmVVU-oG8b42pcy2UOkhE8R8SHFJ5fYn' async defer></script>
+
+    <script type="text/javascript">
+        var locations = [];
+        var lat,lon;
+
+        function storePosition(position) {
+            lat =  position.coords.latitude;
+            lon =  position.coords.longitude;
+        }
+
+        function showError(err) {
+            console.log(err) 
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(storePosition, showError);
+            } else { 
+                lat = 0.0;
+                lon = 0.0;
+            }
+        }
+
+        function GetMap(){
+
+            // getLocation(lat, lon)
+
+            // console.log(lat)
+            // console.log(lon)
+
+            var map = new Microsoft.Maps.Map('#myMap', {
+                center : new Microsoft.Maps.Location( {{ center.lat }} , {{ center.lon }}),
+                mapTypeId : Microsoft.Maps.MapTypeId.road,
+                zooom: 15,
+            });
+
+            {% for shop in shops %}
+                var point = new Microsoft.Maps.Location( {{ shop.lat }}, {{ shop.lon }} );
+                console.log(point)
+                var pin = new Microsoft.Maps.Pushpin(point, {
+                    title: '{{ shop.shop_name }}',
+                    subTitle: '{{ shop.city }}',
+                    text: '{{ shop.shop_id }}'
+                });
+                map.entities.push(pin);
+            {% endfor %}
+        }
+    </script>
 {% endblock %}
 
 {% block body_2 %}
 <div class='container'>
         {% if get_query %}  
             <section id="shop-sec">
-                <ul id='list'>
-                    <li class='cards' id='head'>
-                        <span class='rowhead'>Shop Name</span>
-                        <span class='rowhead'>City</span>
-                    </li>
-                    {% for key,value in shops.items %}
-                        <li class='cards'>
-                            <span class='count'>{{ forloop.counter }}</span>
-                            {% for col in value %}
-                                <span class='col{{ forloop.counter }}'>{{ col }}</span>
-                            {% endfor %}
-                            <span class='loca'><a href="{% url 'shop:profile' key %}"><i class="fa fa-map" aria-hidden="true"></i></a></span>
-                        </li>
-                    {% endfor %}
-                </ul>
+                <table>
+                    <tr>
+                        <th>Shop Id</th>
+                        <th>Shop Name</th>
+                        <th>City</th>
+                    </tr>   
+                    {% for shop in shops %}
+                        <tr>
+                            <td>{{ shop.shop_id }}</td>
+                            <td>{{ shop.name }}</td>
+                            <td>{{ shop.city }}</td>
+                        </tr>
+                    {% endfor %}                 
+                </table>
+            </section>
+
+            <section id="map" onloadstart="GetMap( {{ center.lat }}, {{ center.lon }});">
+                <div id="myMap" style='position:relative;width:600px;height:400px;'></div>
             </section>
 
         {% else %}
